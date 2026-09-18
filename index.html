@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Tamagochi+</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐣</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{
+  --vh: 1vh;
+  --bg:#F3EFFF; --bg2:#EAF6FF;
+  --surface:#FFFFFF; --surface-soft:#F7F5FF;
+  --primary:#7C5CFC; --primary-dark:#5F3DE0;
+  --accent:#FF6FA5; --accent-soft:#FFE1ED;
+  --mint:#34D399; --mint-soft:#DBFBEE;
+  --sun:#FFB648; --sun-soft:#FFF0DA;
+  --danger:#FF5C7A; --danger-soft:#FFE3E8;
+  --ink:#2D2A4A; --ink-soft:#8A85AA;
+  --line:#EAE5FB;
+  --radius:22px;
+  --shadow:0 10px 30px rgba(92,68,220,.12);
+  --shadow-sm:0 4px 14px rgba(92,68,220,.10);
+}
+[data-theme="dark"]{
+  --bg:#151228; --bg2:#171335;
+  --surface:#201C3D; --surface-soft:#241F47;
+  --ink:#F1EEFF; --ink-soft:#A9A2D6; --line:#302A57;
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;height:100%; overflow:hidden;}
+img{max-width:100%;}
+body{
+  font-family:'Nunito',sans-serif; color:var(--ink);
+  background:
+    radial-gradient(circle at 15% 0%, var(--bg2) 0%, transparent 55%),
+    radial-gradient(circle at 100% 30%, #FFE9F3 0%, transparent 45%),
+    var(--bg);
+  min-height:100vh; min-height:100dvh; min-height:calc(var(--vh,1vh)*100);
+  display:flex; justify-content:center; align-items:flex-start;
+  overscroll-behavior:none;
+}
+h1,h2,h3,h4,.display{font-family:'Fredoka',sans-serif; margin:0; font-weight:600;}
+button{font-family:inherit; cursor:pointer;}
+#phone{
+  width:100%; max-width:430px;
+  height:100vh; height:100dvh; height:calc(var(--vh,1vh) * 100);
+  background:var(--bg); position:relative; overflow:hidden;
+  display:flex; flex-direction:column;
+  box-shadow:0 0 60px rgba(92,68,220,.15);
+}
+@media(min-width:431px){
+  #phone{
+    height:92vh; height:92dvh; height:calc(var(--vh,1vh) * 92);
+    margin-top:4vh; border-radius:38px; border:8px solid var(--surface);
+  }
+}
+#screen{flex:1 1 auto; min-height:0; overflow-y:auto; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; padding:calc(14px + env(safe-area-inset-top)) 16px 100px; -ms-overflow-style:none; scrollbar-width:none;}
+#screen::-webkit-scrollbar{display:none;}
+.topbar{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:4px 2px 14px;}
+.topbar .title{font-size:22px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
+.coin-pill{display:flex; align-items:center; gap:6px; background:var(--sun-soft); color:#9A6100; padding:6px 12px; border-radius:20px; font-weight:800; font-size:14px; flex-shrink:0;}
+.icon-btn{width:40px; height:40px; border-radius:14px; border:none; background:var(--surface); display:flex; align-items:center; justify-content:center; box-shadow:var(--shadow-sm); color:var(--primary); font-size:16px; flex-shrink:0;}
+.card{background:var(--surface); border-radius:var(--radius); padding:18px; box-shadow:var(--shadow-sm); margin-bottom:14px;}
+.btn{border:none; border-radius:16px; padding:13px 18px; font-weight:800; font-size:15px; display:inline-flex; align-items:center; gap:8px; justify-content:center; transition:transform .12s ease, box-shadow .12s ease; -webkit-appearance:none;}
+.btn:active{transform:scale(.95);}
+.btn:disabled{opacity:.4; cursor:not-allowed;}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark)); color:#fff; box-shadow:0 8px 18px rgba(124,92,252,.35); width:100%;}
+.btn-accent{background:var(--accent); color:#fff; box-shadow:0 8px 18px rgba(255,111,165,.35);}
+.btn-mint{background:var(--mint); color:#fff;}
+.btn-soft{background:var(--surface-soft); color:var(--primary); border:2px solid var(--line);}
+.btn-danger{background:var(--danger-soft); color:var(--danger);}
+.btn-block{width:100%;}
+.btn-sm{padding:8px 12px; font-size:13px; border-radius:12px;}
+input,select,textarea{
+  width:100%; border:2px solid var(--line); background:var(--surface-soft); border-radius:14px;
+  padding:12px 14px; font-family:'Nunito',sans-serif; font-size:15px; color:var(--ink); outline:none; -webkit-appearance:none;
+}
+input:focus,select:focus,textarea:focus{border-color:var(--primary);}
+label{font-size:13px; font-weight:800; color:var(--ink-soft); margin-bottom:6px; display:block;}
+.field{margin-bottom:14px;}
+.row{display:flex; gap:10px; flex-wrap:wrap;}
+.row > *{flex:1; min-width:0;}
+.center{text-align:center;}
+.muted{color:var(--ink-soft); font-size:13px;}
+.hidden{display:none !important;}
+.pill{display:inline-block; padding:4px 10px; border-radius:20px; font-size:11px; font-weight:800;}
+.pill-admin{background:linear-gradient(135deg,#FFD166,#FF7AB8); color:#fff;}
+.pill-pending{background:var(--sun-soft); color:#9A6100;}
+.pill-approved{background:var(--mint-soft); color:#127A54;}
+.pill-rejected{background:var(--danger-soft); color:var(--danger);}
+.pill-official{background:var(--primary); color:#fff;}
+
+/* Bottom nav */
+.navbar{
+  position:absolute; bottom:0; left:0; right:0; height:auto; min-height:70px;
+  background:var(--surface); display:flex; border-top:1px solid var(--line);
+  box-shadow:0 -6px 20px rgba(92,68,220,.08); padding:6px 2px calc(6px + env(safe-area-inset-bottom)); z-index:20;
+}
+.nav-btn{flex:1; border:none; background:none; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; color:var(--ink-soft); font-size:10.5px; font-weight:800; position:relative; padding:4px 2px; min-width:0;}
+.nav-btn span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:100%;}
+.nav-btn i{font-size:18px;}
+.nav-btn.active{color:var(--primary);}
+.nav-btn.active::before{content:''; position:absolute; top:0; width:22px; height:3px; border-radius:3px; background:var(--primary);}
+
+/* Auth */
+.auth-wrap{min-height:100%; display:flex; flex-direction:column; justify-content:center; padding:10px 4px 30px;}
+.avatar-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:8px; max-height:170px; overflow-y:auto; padding:4px;}
+.avatar-opt{font-size:24px; text-align:center; padding:8px 0; border-radius:12px; background:var(--surface-soft); border:2px solid transparent;}
+.avatar-opt.selected{border-color:var(--primary); background:var(--accent-soft);}
+.profile-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:18px 0;}
+.profile-chip{background:var(--surface); border-radius:18px; padding:14px 6px; text-align:center; box-shadow:var(--shadow-sm); border:2px solid transparent;}
+.profile-chip .av{font-size:30px;}
+.profile-chip .nm{font-size:12px; font-weight:800; margin-top:4px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.tabbar2{display:flex; background:var(--surface-soft); border-radius:14px; padding:4px; margin-bottom:18px;}
+.tabbar2 button{flex:1; border:none; background:none; padding:10px 4px; border-radius:11px; font-weight:800; color:var(--ink-soft); font-size:12.5px;}
+.tabbar2 button.active{background:var(--surface); color:var(--primary); box-shadow:var(--shadow-sm);}
+
+/* Pet stage */
+.pet-stage{
+  background:linear-gradient(180deg,#DCEBFF 0%, #F0EBFF 100%); border-radius:26px; padding:26px 10px 16px;
+  text-align:center; position:relative; overflow:hidden; margin-bottom:16px;
+}
+[data-theme="dark"] .pet-stage{background:linear-gradient(180deg,#232055,#1c1a3a);}
+.pet-emoji{font-size:min(86px,20vw); display:inline-block; animation:bob 2.6s ease-in-out infinite; filter:drop-shadow(0 10px 10px rgba(0,0,0,.12));}
+.pet-emoji.sad{animation:none; filter:drop-shadow(0 10px 10px rgba(0,0,0,.12)) grayscale(.15);}
+.pet-emoji.sleep{animation:none; opacity:.85;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-10px) rotate(2deg);}}
+@keyframes floatUp{0%{transform:translateY(0);opacity:1;}100%{transform:translateY(-70px);opacity:0;}}
+@keyframes popIn{0%{transform:scale(.4);opacity:0;}70%{transform:scale(1.08);}100%{transform:scale(1);opacity:1;}}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+.float-emote{position:absolute; font-size:22px; animation:floatUp 1.1s ease-out forwards; pointer-events:none;}
+.petname{font-size:19px; margin-top:6px;}
+.stagebadge{font-size:11px; font-weight:800; color:var(--primary); background:#fff8; display:inline-block; padding:3px 10px; border-radius:20px; margin-top:2px;}
+.levelbar{height:8px; background:#ffffff88; border-radius:10px; overflow:hidden;}
+.levelbar-fill{height:100%; background:linear-gradient(90deg,var(--sun),var(--accent)); transition:width .4s ease;}
+.stats{display:flex; flex-direction:column; gap:10px; margin-top:6px;}
+.stat-row{display:flex; align-items:center; gap:10px;}
+.stat-row i{width:22px; text-align:center; flex-shrink:0;}
+.bar{flex:1; height:11px; background:var(--surface-soft); border-radius:20px; overflow:hidden; min-width:0;}
+.bar-fill{height:100%; border-radius:20px; transition:width .4s ease;}
+.actions-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:14px;}
+.action-btn{background:var(--surface); border:none; border-radius:16px; padding:10px 2px; box-shadow:var(--shadow-sm); display:flex; flex-direction:column; align-items:center; gap:5px; font-size:10.5px; font-weight:800; color:var(--ink); min-width:0;}
+.action-btn i{font-size:18px; color:var(--primary);}
+.action-btn:active{transform:scale(.92);}
+.action-btn:disabled{opacity:.5;}
+
+/* pixel grid */
+.pixel-grid{display:grid; gap:2px; background:var(--line); border-radius:12px; padding:6px; margin:0 auto; touch-action:none; max-width:100%;}
+.pixel-cell{aspect-ratio:1; border-radius:2px; background:
+  linear-gradient(45deg,#e9e6f7 25%,transparent 25%),linear-gradient(-45deg,#e9e6f7 25%,transparent 25%),
+  linear-gradient(45deg,transparent 75%,#e9e6f7 75%),linear-gradient(-45deg,transparent 75%,#e9e6f7 75%);
+  background-size:8px 8px; background-position:0 0,0 4px,4px -4px,-4px 0px;
+}
+.palette{display:flex; flex-wrap:wrap; gap:8px; margin:14px 0;}
+.swatch{width:30px; height:30px; border-radius:9px; border:2px solid var(--line);}
+.swatch.selected{border-color:var(--ink); transform:scale(1.1);}
+
+/* modal */
+.overlay{position:absolute; inset:0; background:rgba(30,20,60,.45); display:flex; align-items:flex-end; z-index:50; backdrop-filter:blur(2px); -webkit-backdrop-filter:blur(2px);}
+.sheet{background:var(--surface); width:100%; border-radius:26px 26px 0 0; padding:22px 18px calc(26px + env(safe-area-inset-bottom)); max-height:88vh; overflow-y:auto; animation:sheetUp .25s ease;}
+@keyframes sheetUp{from{transform:translateY(30px); opacity:0;} to{transform:translateY(0); opacity:1;}}
+.sheet-handle{width:40px; height:5px; background:var(--line); border-radius:4px; margin:0 auto 14px;}
+
+/* toast */
+#toast-wrap{position:absolute; top:calc(14px + env(safe-area-inset-top)); left:0; right:0; display:flex; flex-direction:column; align-items:center; gap:8px; z-index:1200; pointer-events:none;}
+.toast{background:var(--ink); color:#fff; padding:10px 18px; border-radius:30px; font-size:13px; font-weight:700; box-shadow:0 8px 20px rgba(0,0,0,.25); animation:popIn .25s ease; max-width:90%; text-align:center;}
+.toast.err{background:var(--danger);}
+.toast.ok{background:var(--mint);}
+
+/* lists */
+.list-item{display:flex; align-items:center; gap:10px; padding:12px; border-radius:16px; background:var(--surface-soft); margin-bottom:10px; flex-wrap:wrap;}
+.list-item .av{font-size:26px; width:40px; text-align:center; flex-shrink:0;}
+.list-item .meta{flex:1; min-width:80px;}
+.list-item .meta .n{font-weight:800; font-size:14px;}
+.list-item .meta .s{font-size:12px; color:var(--ink-soft);}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.game-card,.skin-card{background:var(--surface-soft); border-radius:18px; padding:14px; text-align:center;}
+.game-card .gi,.skin-card .gi{font-size:34px; margin-bottom:6px;}
+.empty-state{text-align:center; padding:40px 10px; color:var(--ink-soft);}
+.empty-state i{font-size:38px; margin-bottom:10px; color:var(--line);}
+.reflex-arena{position:relative; width:100%; height:min(340px,55vh); border-radius:20px; overflow:hidden; background:#cfe8ff; touch-action:manipulation;}
+.reflex-target{position:absolute; font-size:34px; background:none; border:none; transform:translate(-50%,-50%); animation:popIn .15s ease;}
+.quiz-opt{width:100%; text-align:left; margin-bottom:10px; padding:14px; border-radius:14px; border:2px solid var(--line); background:var(--surface-soft); font-weight:700; font-size:14px;}
+.quiz-opt.correct{border-color:var(--mint); background:var(--mint-soft);}
+.quiz-opt.wrong{border-color:var(--danger); background:var(--danger-soft);}
+.spinner{width:34px; height:34px; border-radius:50%; border:4px solid var(--line); border-top-color:var(--primary); animation:spin .8s linear infinite; margin:30px auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.switch{position:relative; display:inline-block; width:46px; height:26px; flex-shrink:0;}
+.switch input{opacity:0; width:0; height:0;}
+.slider{position:absolute; inset:0; background:var(--line); border-radius:30px; transition:.2s;}
+.slider::before{content:''; position:absolute; width:20px; height:20px; left:3px; top:3px; background:#fff; border-radius:50%; transition:.2s;}
+input:checked + .slider{background:var(--primary);}
+input:checked + .slider::before{transform:translateX(20px);}
+.section-title{font-size:13px; font-weight:800; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.03em; margin:18px 0 8px 2px;}
+.divider{height:1px; background:var(--line); margin:12px 0;}
+
+/* shop / sticker icons */
+.shop-item{background:var(--surface-soft); border-radius:16px; padding:12px; text-align:center; position:relative;}
+.shop-item.locked{opacity:.5;}
+.lock-badge{position:absolute; top:8px; right:8px; font-size:10px; background:var(--ink); color:#fff; padding:2px 7px; border-radius:10px; font-weight:800;}
+.emoji-badge{width:52px; height:52px; border-radius:16px; background:linear-gradient(160deg,#ffffff,#f0edff); display:flex; align-items:center; justify-content:center; margin:0 auto 6px; box-shadow:0 4px 10px rgba(92,68,220,.14);}
+.emoji-badge img{filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));}
+.emoji-badge.small{width:40px; height:40px; border-radius:12px; margin:0;}
+.inv-row{display:flex; align-items:center; gap:12px; padding:10px; border-radius:14px; background:var(--surface-soft); margin-bottom:8px;}
+
+/* fullscreen sandbox */
+.fs-overlay{position:fixed; inset:0; background:var(--bg); z-index:999; overflow-y:auto; display:flex; flex-direction:column; padding-bottom:env(safe-area-inset-bottom);}
+.fs-header{position:sticky; top:0; background:var(--surface); padding:calc(14px + env(safe-area-inset-top)) 16px 14px; display:flex; align-items:center; gap:12px; box-shadow:var(--shadow-sm); z-index:2;}
+.fs-body{padding:16px; max-width:560px; width:100%; margin:0 auto; flex:1;}
+.preset-card{background:var(--surface); border-radius:18px; padding:16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; box-shadow:var(--shadow-sm);}
+.preset-card .pi{font-size:30px; flex-shrink:0;}
+.rules-summary{background:var(--surface-soft); border-left:4px solid var(--primary); border-radius:12px; padding:14px; font-size:13px; line-height:1.6;}
+
+/* memory */
+.memory-grid{display:grid; gap:8px;}
+.memory-card{aspect-ratio:1; border-radius:12px; background:var(--primary); display:flex; align-items:center; justify-content:center; font-size:min(26px,6vw); cursor:pointer;}
+.memory-card.flipped, .memory-card.matched{background:var(--surface-soft);}
+.memory-card.matched{opacity:.35;}
+
+/* whack */
+.whack-grid{display:grid; gap:10px; touch-action:manipulation;}
+.whack-hole{aspect-ratio:1; border-radius:50%; background:var(--surface-soft); display:flex; align-items:center; justify-content:center; font-size:min(30px,7vw); box-shadow:inset 0 4px 10px rgba(0,0,0,.08);}
+
+/* colormatch */
+.color-swatch-btn{border-radius:16px; border:none;}
+
+/* dodge */
+.dodge-lanes{display:flex; gap:8px; height:min(340px,50vh); position:relative; background:#dff0ff; border-radius:18px; overflow:hidden; touch-action:manipulation;}
+.dodge-lane{flex:1; position:relative;}
+.dodge-player{position:absolute; bottom:8px; left:50%; transform:translateX(-50%); font-size:30px;}
+.dodge-obj{position:absolute; left:50%; transform:translateX(-50%); font-size:26px;}
+
+/* simon */
+.simon-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; width:min(220px,68vw); margin:0 auto;}
+.simon-pad{aspect-ratio:1; border-radius:16px; border:none; opacity:.55; transition:opacity .1s, transform .1s;}
+.simon-pad.lit{opacity:1; transform:scale(0.94);}
+
+/* rhythm */
+.rhythm-wrap{position:relative; width:min(200px,60vw); height:min(200px,60vw); margin:20px auto;}
+.rhythm-target{position:absolute; inset:0; border-radius:50%; border:4px solid var(--line);}
+.rhythm-ring{position:absolute; inset:0; border-radius:50%; border:4px solid var(--primary);}
+
+@media(max-width:370px){
+  .actions-grid{gap:5px;}
+  .action-btn{font-size:9.5px; padding:9px 1px;}
+  .action-btn i{font-size:16px;}
+  .nav-btn{font-size:9.5px;}
+  .nav-btn i{font-size:16px;}
+  .topbar .title{font-size:18px;}
+  .coin-pill{font-size:11px; padding:5px 8px;}
+  .pet-emoji{font-size:min(74px,22vw);}
+}
+</style>
+</head>
+<body>
+<div id="phone">
+  <div id="toast-wrap"></div>
+  <div id="screen"></div>
+  <div id="navholder"></div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut,
+  onAuthStateChanged, updatePassword, reauthenticateWithCredential, EmailAuthProvider,
+  deleteUser, setPersistence, browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot, collection, query, where,
+  orderBy, limit, addDoc, arrayUnion, arrayRemove, increment, serverTimestamp, deleteDoc,
+  getDocs, startAt, endAt
+} from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDqIbG4C9_B2l6WvPjduJEOp9E-OtUuA8E",
+  authDomain: "assistente-ffe11.firebaseapp.com",
+  projectId: "assistente-ffe11",
+  storageBucket: "assistente-ffe11.firebasestorage.app",
+  messagingSenderId: "1093499265024",
+  appId: "1:1093499265024:web:550bc5411826a669aa38e5"
+};
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+setPersistence(auth, browserLocalPersistence).catch(()=>{});
+
+/* Chiavi segrete di accesso Admin: sblocco nascosto (Impostazioni -> tocca 6 volte l'avatar) */
+const ADMIN_KEYS = ["TQ7-K92X-LM4R","BH3-9WZP-VD61","FN8-2QRT-XY45","JK5-M74W-CP93","ZR1-8HBL-QN26"];
+const EMAIL_DOMAIN = "tamagochiplus.local";
+const AVATARS = ["🐣","🐤","🐥","🐰","🐱","🐶","🦊","🐼","🐨","🐯","🦁","🐸","🐵","🦄","🐷","🐹","🐧","🦖","🦕","🐙","🐢","🦋","🐝","👾"];
+const PALETTE = ["#2D2A4A","#FFFFFF","#FF6FA5","#FFB648","#34D399","#7C5CFC","#3B82F6","#F87171","#FBBF24","#A78BFA","#F472B6","#111111"];
+const GRID_N = 10;
+const STAGE_INFO = [
+  {min:0, name:"Uovo", emo:"🥚"},
+  {min:1, name:"Cucciolo", emo:null},
+  {min:6, name:"Ragazzo", emo:null},
+  {min:16, name:"Adulto", emo:null},
+  {min:40, name:"Veterano", emo:null},
+  {min:90, name:"Leggendario", emo:null},
+];
+const WEAK_PASSWORDS = ["123456","1234567","12345678","123456789","1234567890","111111","000000","222222","333333","444444","555555","666666","777777","888888","999999","password","qwerty","qwertyuiop","abc123","abcdef","letmein","admin123","iloveyou","welcome","monkey","dragon","123123","1q2w3e","111222","12341234","asdfgh","000111"];
+function isWeakPassword(pw){
+  const p=(pw||"").toLowerCase();
+  if(WEAK_PASSWORDS.includes(p)) return true;
+  if(new Set(p).size<=1 && p.length>0) return true;
+  if(/^(0123456789|123456789|12345678|1234567|987654321)/.test(p)) return true;
+  return false;
+}
+function twemojiUrl(emoji){
+  const cps=[...emoji].map(c=>c.codePointAt(0).toString(16)).filter(x=>x!=="fe0f").join("-");
+  return `https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/${cps}.png`;
+}
+function emojiBadge(emoji,size=34,small){
+  return `<div class="emoji-badge${small?' small':''}"><img src="${twemojiUrl(emoji)}" alt="${esc(emoji)}" data-fallback-emoji="${esc(emoji)}" class="emoji-img" style="width:${size}px;height:${size}px;"></div>`;
+}
+function wireEmojiFallbacks(root){
+  (root||document).querySelectorAll("img.emoji-img").forEach(img=>{
+    if(img.dataset.wired) return;
+    img.dataset.wired="1";
+    img.addEventListener("error",()=>{
+      const span=document.createElement("span");
+      span.textContent=img.dataset.fallbackEmoji||"🙂";
+      span.style.fontSize=(parseInt(img.style.width||"34",10)+8)+"px";
+      span.style.lineHeight="1";
+      img.replaceWith(span);
+    });
+  });
+}
+const SHOP_DRINKS=[
+  {id:"acqua_sporca", name:"Acqua sporca", emoji:"🚱", minLevel:1, price:1, restore:12, happiness:-4},
+  {id:"acqua_naturale", name:"Acqua naturale", emoji:"💧", minLevel:1, price:3, restore:18, happiness:0},
+  {id:"succo_frutta", name:"Succo di frutta", emoji:"🧃", minLevel:3, price:6, restore:24, happiness:2},
+  {id:"te_freddo", name:"Tè freddo", emoji:"🧊", minLevel:5, price:9, restore:28, happiness:3},
+  {id:"frappe_fragola", name:"Frappè alla fragola", emoji:"🥤", minLevel:8, price:13, restore:32, happiness:5},
+  {id:"limonata", name:"Limonata", emoji:"🍋", minLevel:11, price:17, restore:36, happiness:6},
+  {id:"cioccolata_calda", name:"Cioccolata calda", emoji:"🍫", minLevel:14, price:21, restore:40, happiness:7},
+  {id:"bubble_tea", name:"Bubble tea", emoji:"🧋", minLevel:18, price:26, restore:44, happiness:9},
+  {id:"smoothie_esotico", name:"Smoothie esotico", emoji:"🍹", minLevel:22, price:32, restore:48, happiness:11},
+];
+const SHOP_FOOD=[
+  {id:"pane_morsicato", name:"Pane morsicato", emoji:"🍞", minLevel:1, price:1, restore:12, happiness:-4},
+  {id:"buccia_anguria", name:"Buccia d'anguria", emoji:"🍉", minLevel:1, price:2, restore:16, happiness:-2},
+  {id:"mela", name:"Mela", emoji:"🍎", minLevel:3, price:5, restore:20, happiness:1},
+  {id:"panino", name:"Panino", emoji:"🥪", minLevel:5, price:9, restore:26, happiness:3},
+  {id:"pizza_margherita", name:"Pizza margherita", emoji:"🍕", minLevel:8, price:13, restore:31, happiness:5},
+  {id:"sushi", name:"Sushi", emoji:"🍣", minLevel:11, price:18, restore:36, happiness:7},
+  {id:"hamburger_gourmet", name:"Hamburger gourmet", emoji:"🍔", minLevel:14, price:23, restore:40, happiness:8},
+  {id:"bistecca_gourmet", name:"Bistecca gourmet", emoji:"🥩", minLevel:18, price:28, restore:45, happiness:10},
+  {id:"torta_gourmet", name:"Torta gourmet", emoji:"🍰", minLevel:22, price:34, restore:50, happiness:12},
+];
+const MECH_SCHEMAS = {
+  catch:[
+    {key:"target", label:"Emoji bersaglio", type:"text", default:"⭐"},
+    {key:"decoy", label:"Emoji trappola", type:"text", default:"💣"},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:10,max:90, default:30},
+    {key:"spawn", label:"Velocità comparsa (ms)", type:"number", min:300,max:2000, default:800},
+    {key:"winScore", label:"Punteggio per vincere", type:"number", min:1, default:15},
+  ],
+  memory:[
+    {key:"pairs", label:"Numero di coppie (3-10)", type:"number", min:3,max:10, default:6},
+    {key:"duration", label:"Tempo limite (secondi)", type:"number", min:20,max:120, default:60},
+  ],
+  whack:[
+    {key:"target", label:"Emoji da colpire", type:"text", default:"🐹"},
+    {key:"holes", label:"Numero di buche (4-9)", type:"number", min:4,max:9, default:9},
+    {key:"popSpeed", label:"Tempo di comparsa (ms)", type:"number", min:400,max:2000, default:900},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:30},
+    {key:"winScore", label:"Punteggio per vincere", type:"number", min:1, default:12},
+  ],
+  colormatch:[
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:30},
+    {key:"winScore", label:"Punteggio per vincere", type:"number", min:1, default:10},
+  ],
+  math:[
+    {key:"maxNumber", label:"Numero massimo nelle operazioni", type:"number", min:5,max:200, default:20},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:40},
+    {key:"winScore", label:"Risposte corrette per vincere", type:"number", min:1, default:8},
+  ],
+  dodge:[
+    {key:"lanes", label:"Numero di corsie (2-4)", type:"number", min:2,max:4, default:3},
+    {key:"spawnSpeed", label:"Velocità ostacoli (ms)", type:"number", min:300,max:1500, default:700},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:30},
+    {key:"maxHits", label:"Colpi massimi consentiti", type:"number", min:0,max:20, default:3},
+  ],
+  simon:[
+    {key:"speed", label:"Velocità sequenza (ms)", type:"number", min:300,max:1200, default:600},
+    {key:"winLength", label:"Lunghezza sequenza per vincere", type:"number", min:3,max:20, default:8},
+  ],
+  typing:[
+    {key:"words", label:"Parole (separate da virgola)", type:"text", default:"gatto,cane,sole,luna,fiore,albero,mare,vento"},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:40},
+    {key:"winScore", label:"Parole corrette per vincere", type:"number", min:1, default:8},
+  ],
+  rhythm:[
+    {key:"speed", label:"Velocità anello (ms per ciclo)", type:"number", min:600,max:3000, default:1400},
+    {key:"duration", label:"Durata (secondi)", type:"number", min:15,max:90, default:30},
+    {key:"winScore", label:"Colpi precisi per vincere", type:"number", min:1, default:10},
+  ],
+};
+const PRESETS=[
+  {mechanic:"catch", icon:"🎯", name:"Acchiappa Stelle", desc:"Colpisci i bersagli giusti ed evita le trappole."},
+  {mechanic:"quiz", icon:"🧠", name:"Quiz Lampo", desc:"Domande a risposta multipla per la community."},
+  {mechanic:"memory", icon:"🃏", name:"Memory Match", desc:"Trova tutte le coppie di carte in tempo limitato."},
+  {mechanic:"whack", icon:"🔨", name:"Talpa Veloce", desc:"Colpisci la talpa prima che scappi nella tana."},
+  {mechanic:"colormatch", icon:"🎨", name:"Tocca il Colore", desc:"Tocca il colore corrispondente al nome mostrato."},
+  {mechanic:"math", icon:"➕", name:"Conto alla Rovescia", desc:"Risolvi le operazioni prima che scada il tempo."},
+  {mechanic:"dodge", icon:"🛞", name:"Schiva la Pioggia", desc:"Sposta il personaggio ed evita ciò che cade."},
+  {mechanic:"simon", icon:"🔴", name:"Sequenza Segreta", desc:"Ripeti la sequenza di colori che si allunga."},
+  {mechanic:"typing", icon:"⌨️", name:"Battitura Veloce", desc:"Scrivi le parole mostrate il più in fretta possibile."},
+  {mechanic:"rhythm", icon:"🎵", name:"Tap Ritmico", desc:"Tocca esattamente quando l'anello combacia."},
+];
+const COLOR_POOL=[{n:"Rosso",h:"#F87171"},{n:"Blu",h:"#3B82F6"},{n:"Verde",h:"#34D399"},{n:"Giallo",h:"#FBBF24"},{n:"Viola",h:"#A78BFA"},{n:"Rosa",h:"#F472B6"},{n:"Arancio",h:"#FFB648"}];
+const SIMON_COLORS=["#F87171","#3B82F6","#FBBF24","#34D399"];
+const GAME_ICONS={catch:'🎯',quiz:'🧠',memory:'🃏',whack:'🔨',colormatch:'🎨',math:'➕',dodge:'🛞',simon:'🔴',typing:'⌨️',rhythm:'🎵'};
+
+let CURRENT_USER = null;
+let PROFILE = null;
+let VIEW = "home";
+let SUBS = [];
+let TEMP = {};
+let offlineRewardChecked = false;
+
+/* ---------------- responsive viewport fix ---------------- */
+function setVH(){ document.documentElement.style.setProperty("--vh", (window.innerHeight*0.01)+"px"); }
+setVH();
+window.addEventListener("resize", setVH);
+window.addEventListener("orientationchange", ()=>setTimeout(setVH,300));
+
+/* ---------------- utils ---------------- */
+function $(sel,root=document){return root.querySelector(sel);}
+function el(html){const t=document.createElement("template"); t.innerHTML=html.trim(); return t.content.firstChild;}
+function esc(s){return (s||"").toString().replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function uidLite(){return Math.random().toString(36).slice(2,10)+Date.now().toString(36);}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function fmtMin(ms){const m=Math.ceil(ms/60000); return m+"min";}
+function toast(msg,type=""){
+  const w=$("#toast-wrap");
+  const t=el(`<div class="toast ${type}">${esc(msg)}</div>`);
+  w.appendChild(t);
+  setTimeout(()=>{t.style.transition="opacity .3s"; t.style.opacity="0"; setTimeout(()=>t.remove(),300);},2200);
+}
+function clearSubs(){SUBS.forEach(u=>{try{u();}catch(e){}}); SUBS=[];}
+function usernameLower(s){return (s||"").trim().toLowerCase();}
+function emailFor(username){return usernameLower(username).replace(/[^a-z0-9_.-]/g,"")+"_"+"@"+EMAIL_DOMAIN;}
+async function safeWrite(fn, okMsg, errPrefix){
+  try{
+    await fn();
+    if(okMsg) toast(okMsg,"ok");
+    return true;
+  }catch(e){
+    console.error(errPrefix||"Errore scrittura Firestore", e);
+    toast((errPrefix||"Operazione non riuscita")+" — controlla le regole Firestore","err");
+    return false;
+  }
+}
+
+/* ------------- audio (Web Audio API synth) ------------- */
+let actx=null;
+function ac(){ if(!actx){ actx = new (window.AudioContext||window.webkitAudioContext)(); } return actx; }
+function tone(freq,dur=0.15,type="sine",vol=0.18,delay=0){
+  try{
+    const c=ac(); const o=c.createOscillator(); const g=c.createGain();
+    o.type=type; o.frequency.value=freq;
+    g.gain.value=0; o.connect(g); g.connect(c.destination);
+    const t0=c.currentTime+delay;
+    g.gain.linearRampToValueAtTime(vol,t0+0.01);
+    g.gain.exponentialRampToValueAtTime(0.001,t0+dur);
+    o.start(t0); o.stop(t0+dur+0.02);
+  }catch(e){}
+}
+const SND={
+  click:()=>tone(520,0.06,"square",0.08),
+  feed:()=>{tone(440,.1);tone(660,.12,"sine",.15,.09);},
+  play:()=>{tone(523,.09);tone(659,.09,"sine",.15,.08);tone(784,.14,"sine",.15,.16);},
+  clean:()=>{tone(300,.1,"sine",.1);tone(500,.1,"sine",.1,.08);},
+  sleep:()=>tone(220,.4,"sine",.12),
+  success:()=>{tone(523,.1);tone(659,.1,"sine",.16,.09);tone(784,.16,"sine",.16,.18);tone(1046,.2,"sine",.14,.27);},
+  error:()=>{tone(180,.22,"sawtooth",.12);},
+  coin:()=>{tone(988,.08,"square",.12);tone(1318,.12,"square",.1,.06);},
+  notify:()=>{tone(700,.08,"sine",.12);tone(900,.1,"sine",.12,.09);}
+};
+
+/* ---------------- pet model ---------------- */
+function newPet(name){
+  return {
+    name: name||"Otama", hunger:80, happiness:80, energy:80, hygiene:80, thirst:80,
+    ageMinutes:0, coins:25, level:1, exp:0, sleeping:false, equippedSkin:null,
+    lastUpdate: Date.now(), lastSeen: Date.now(), lastCuddle:0,
+    inventory:{food:{}, drink:{}}
+  };
+}
+function stageFor(ageMinutes){
+  let s=STAGE_INFO[0];
+  for(const st of STAGE_INFO){ if(ageMinutes>=st.min) s=st; }
+  return s;
+}
+function petEmojiFor(profile){
+  const p=profile.pet;
+  if(p.equippedSkin) return null;
+  const stage=stageFor(p.ageMinutes);
+  if(stage.emo) return stage.emo;
+  return profile.avatar || "🐣";
+}
+function expForLevel(l){ return 30+(l||1)*25; }
+function addExp(amount){
+  const pet=PROFILE.pet;
+  pet.exp=(pet.exp||0)+Math.max(0,amount);
+  let leveled=false;
+  while(pet.exp>=expForLevel(pet.level||1)){
+    pet.exp-=expForLevel(pet.level||1);
+    pet.level=(pet.level||1)+1;
+    pet.coins=(pet.coins||0)+8;
+    leveled=true;
+  }
+  if(leveled){ SND.success(); toast("Livello "+pet.level+" raggiunto! 🎉","ok"); }
+}
+function cuddleRemaining(){
+  const last=PROFILE.pet.lastCuddle||0;
+  const rem=15*60000-(Date.now()-last);
+  return rem>0?rem:0;
+}
+function applyDecay(pet){
+  const now=Date.now();
+  const elapsedMin = Math.max(0,(now-(pet.lastUpdate||now))/60000);
+  if(pet.thirst===undefined) pet.thirst=80;
+  if(pet.level===undefined) pet.level=1;
+  if(pet.exp===undefined) pet.exp=0;
+  if(!pet.inventory) pet.inventory={food:{},drink:{}};
+  if(elapsedMin<=0) return pet;
+  if(!pet.sleeping){
+    pet.hunger = clamp(pet.hunger - elapsedMin*1.1, 0, 100);
+    pet.thirst = clamp(pet.thirst - elapsedMin*1.3, 0, 100);
+    pet.happiness = clamp(pet.happiness - elapsedMin*0.8, 0, 100);
+    pet.hygiene = clamp(pet.hygiene - elapsedMin*0.6, 0, 100);
+    pet.energy = clamp(pet.energy - elapsedMin*0.7, 0, 100);
+    pet.ageMinutes = (pet.ageMinutes||0) + elapsedMin;
+  } else {
+    pet.energy = clamp(pet.energy + elapsedMin*2.2, 0, 100);
+    pet.hunger = clamp(pet.hunger - elapsedMin*0.3, 0, 100);
+    pet.thirst = clamp(pet.thirst - elapsedMin*0.3, 0, 100);
+  }
+  pet.lastUpdate = now;
+  return pet;
+}
+async function saveProfile(patch){
+  if(!CURRENT_USER) return false;
+  Object.assign(PROFILE, patch);
+  try{
+    await updateDoc(doc(db,"users",CURRENT_USER.uid), patch);
+    return true;
+  }catch(e){
+    console.error("saveProfile error", e);
+    toast("Errore di salvataggio: verifica le regole Firestore","err");
+    return false;
+  }
+}
+async function savePet(){
+  return await saveProfile({pet: PROFILE.pet});
+}
+function grantOfflineReward(){
+  if(offlineRewardChecked) return; offlineRewardChecked=true;
+  const pet=PROFILE.pet;
+  const last=pet.lastSeen||pet.lastUpdate||Date.now();
+  const hours=Math.min(24,Math.max(0,(Date.now()-last)/3600000));
+  const coins=Math.floor(hours*10);
+  pet.lastSeen=Date.now();
+  if(coins>0){
+    pet.coins=(pet.coins||0)+coins;
+    savePet();
+    toast("Bentornato! Rendita offline: +"+coins+" monete 💰","ok");
+  } else {
+    savePet();
+  }
+}
+document.addEventListener("visibilitychange",()=>{
+  if(document.hidden && PROFILE && CURRENT_USER){ PROFILE.pet.lastSeen=Date.now(); savePet(); }
+});
+
+/* ---------------- navigation / render shell ---------------- */
+function navigate(view, initialTemp){
+  clearSubs();
+  VIEW = view;
+  TEMP = initialTemp || {};
+  render();
+}
+const NAV_ITEMS = [
+  {id:"home", icon:"fa-house", label:"Home"},
+  {id:"arcade", icon:"fa-gamepad", label:"Arcade"},
+  {id:"market", icon:"fa-store", label:"Market"},
+  {id:"social", icon:"fa-users", label:"Social"},
+  {id:"settings", icon:"fa-gear", label:"Profilo"},
+];
+function renderNav(){
+  const holder=$("#navholder");
+  if(!CURRENT_USER){ holder.innerHTML=""; return; }
+  const items=[...NAV_ITEMS];
+  if(PROFILE?.isAdmin) items.push({id:"admin", icon:"fa-shield-halved", label:"Admin"});
+  holder.innerHTML = `<div class="navbar">${items.map(it=>`
+    <button class="nav-btn ${VIEW===it.id?'active':''}" data-nav="${it.id}">
+      <i class="fa-solid ${it.icon}"></i><span>${it.label}</span>
+    </button>`).join("")}</div>`;
+  holder.querySelectorAll("[data-nav]").forEach(b=>b.onclick=()=>{SND.click(); navigate(b.dataset.nav);});
+}
+function openSheet(html){
+  closeSheet();
+  const ov=el(`<div class="overlay" id="sheetOverlay"><div class="sheet"><div class="sheet-handle"></div>${html}</div></div>`);
+  ov.addEventListener("click",(e)=>{ if(e.target.id==="sheetOverlay") closeSheet(); });
+  document.getElementById("phone").appendChild(ov);
+  wireEmojiFallbacks(ov);
+}
+function closeSheet(){ const o=document.getElementById("sheetOverlay"); if(o) o.remove(); }
+function openConfirmSheet(title,msg,onYes){
+  openSheet(`
+    <h3 class="center" style="margin-bottom:8px; color:var(--danger);">${esc(title)}</h3>
+    <p class="muted center" style="margin-bottom:16px;">${esc(msg)}</p>
+    <div class="row"><button class="btn btn-soft btn-block" id="cfNo">Annulla</button><button class="btn btn-danger btn-block" id="cfYes">Conferma</button></div>`);
+  $("#cfNo").onclick=closeSheet;
+  $("#cfYes").onclick=async ()=>{ closeSheet(); await onYes(); };
+}
+
+function render(){
+  renderNav();
+  const screen=$("#screen");
+  if(!CURRENT_USER){ screen.innerHTML=""; renderAuth(); return; }
+  if(!PROFILE){ screen.innerHTML=`<div class="spinner"></div>`; return; }
+  applyDecay(PROFILE.pet);
+  switch(VIEW){
+    case "home": return renderHome();
+    case "arcade": return renderArcade();
+    case "playgame": return renderPlayGame();
+    case "pixeleditor": return renderPixelEditor();
+    case "market": return renderMarket();
+    case "social": return renderSocial();
+    case "visit": return renderVisit();
+    case "settings": return renderSettings();
+    case "admin": return renderAdmin();
+    case "dm": return renderDM();
+    default: return renderHome();
+  }
+}
+
+/* ================= AUTH ================= */
+function renderAuth(){
+  const screen=$("#screen");
+  const mode = TEMP.authMode || "login";
+  let recent=[]; try{ recent = JSON.parse(localStorage.getItem("tgp_recent")||"[]"); }catch(e){}
+  screen.innerHTML = `
+  <div class="auth-wrap">
+    <div class="center" style="margin-bottom:22px;">
+      <div style="font-size:54px;">🐣</div>
+      <h1 style="font-size:30px;">Tamagochi<span style="color:var(--accent)">+</span></h1>
+      <p class="muted">Il tuo pet virtuale, sempre con te</p>
+    </div>
+    ${recent.length && mode==="login" ? `
+      <div class="section-title">Profili recenti</div>
+      <div class="profile-grid">
+        ${recent.slice(0,6).map(r=>`
+          <button class="profile-chip" data-recent="${esc(r.u)}" style="border:none;">
+            <div class="av">${r.a||"🐣"}</div><div class="nm">${esc(r.u)}</div>
+          </button>`).join("")}
+      </div>` : ``}
+    <div class="tabbar2">
+      <button data-mode="login" class="${mode==='login'?'active':''}">Accedi</button>
+      <button data-mode="register" class="${mode==='register'?'active':''}">Crea profilo</button>
+    </div>
+    <div id="authForm"></div>
+  </div>`;
+  screen.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{TEMP.authMode=b.dataset.mode; render();});
+  screen.querySelectorAll("[data-recent]").forEach(b=>b.onclick=()=>{
+    TEMP.authMode="login"; TEMP.prefillUser=b.dataset.recent; render();
+  });
+  renderAuthForm(mode);
+}
+function renderAuthForm(mode){
+  const box=$("#authForm");
+  if(mode==="login"){
+    box.innerHTML=`
+      <div class="field"><label>Nome utente</label><input id="f_user" value="${esc(TEMP.prefillUser||'')}" placeholder="es. luca92"></div>
+      <div class="field"><label>Password</label><input id="f_pass" type="password" placeholder="La tua password"></div>
+      <button class="btn btn-primary btn-block" id="doLogin"><i class="fa-solid fa-right-to-bracket"></i> Accedi</button>
+      <p class="muted center" style="margin-top:14px;">Nuovo qui? Passa a "Crea profilo".</p>`;
+    $("#doLogin").onclick=doLogin;
+    $("#f_pass").onkeydown=(e)=>{ if(e.key==="Enter") doLogin(); };
+  } else {
+    TEMP.selAvatar = TEMP.selAvatar || AVATARS[0];
+    box.innerHTML=`
+      <div class="field"><label>Nome utente</label><input id="f_user" placeholder="Scegli un nome utente unico"></div>
+      <div class="field"><label>Password</label><input id="f_pass" type="password" placeholder="Almeno 6 caratteri, non banale"></div>
+      <div class="field"><label>Conferma password</label><input id="f_pass2" type="password" placeholder="Ripeti la password"></div>
+      <div class="field">
+        <label>Scegli l'avatar</label>
+        <div class="avatar-grid" id="avGrid">
+          ${AVATARS.map(a=>`<div class="avatar-opt ${a===TEMP.selAvatar?'selected':''}" data-av="${a}">${a}</div>`).join("")}
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" id="doRegister"><i class="fa-solid fa-sparkles"></i> Crea il mio Otamagochi</button>`;
+    box.querySelectorAll("[data-av]").forEach(d=>d.onclick=()=>{TEMP.selAvatar=d.dataset.av; box.querySelectorAll(".avatar-opt").forEach(x=>x.classList.toggle("selected",x.dataset.av===TEMP.selAvatar));});
+    $("#doRegister").onclick=doRegister;
+  }
+}
+async function doLogin(){
+  const u=usernameLower($("#f_user").value); const p=$("#f_pass").value;
+  if(!u||!p) return toast("Compila tutti i campi","err");
+  try{
+    await signInWithEmailAndPassword(auth, emailFor(u), p);
+    SND.success();
+  }catch(e){
+    SND.error();
+    toast(e.code==="auth/invalid-credential"||e.code==="auth/wrong-password"||e.code==="auth/user-not-found" ? "Nome utente o password errati" : "Errore: "+e.code, "err");
+  }
+}
+async function doRegister(){
+  const uname=$("#f_user").value.trim(); const uLower=usernameLower(uname);
+  const p=$("#f_pass").value; const p2=$("#f_pass2").value;
+  if(!uname||uname.length<3) return toast("Scegli un nome utente di almeno 3 caratteri","err");
+  if(!/^[a-zA-Z0-9_.]+$/.test(uname)) return toast("Usa solo lettere, numeri, _ e .","err");
+  if(p.length<6) return toast("La password deve avere almeno 6 caratteri","err");
+  if(isWeakPassword(p)) return toast("Password troppo banale, scegline una più sicura","err");
+  if(p!==p2) return toast("Le password non coincidono","err");
+  try{
+    const qs = await getDocs(query(collection(db,"users"), where("usernameLower","==",uLower), limit(1)));
+    if(!qs.empty) return toast("Nome utente già in uso","err");
+    const cred = await createUserWithEmailAndPassword(auth, emailFor(uname), p);
+    const profile = {
+      username: uname, usernameLower:uLower, avatar: TEMP.selAvatar||AVATARS[0],
+      isAdmin:false, banned:false, forceLogout:false, privacy:{online:true, friendRequests:true},
+      pet: newPet(uname+"ino"),
+      friends:[], incomingRequests:[], outgoingRequests:[],
+      ownedSkins:[], createdAt: Date.now()
+    };
+    await setDoc(doc(db,"users",cred.user.uid), profile);
+    rememberProfile(uname, profile.avatar);
+    toast("Benvenuto in Tamagochi+ 🎉","ok");
+    SND.success();
+  }catch(e){
+    SND.error();
+    toast(e.code==="auth/email-already-in-use" ? "Nome utente già in uso" : "Errore: "+e.code, "err");
+  }
+}
+function rememberProfile(u,a){
+  try{
+    let list=JSON.parse(localStorage.getItem("tgp_recent")||"[]");
+    list=list.filter(x=>x.u!==u); list.unshift({u,a});
+    localStorage.setItem("tgp_recent", JSON.stringify(list.slice(0,6)));
+  }catch(e){}
+}
+
+/* ================= HOME ================= */
+function renderHome(){
+  const p=PROFILE, pet=p.pet;
+  const emo = petEmojiFor(p);
+  const stage = stageFor(pet.ageMinutes);
+  const statuses=[
+    {k:"hunger", label:"Fame", icon:"fa-drumstick-bite", color:"var(--sun)"},
+    {k:"thirst", label:"Sete", icon:"fa-glass-water", color:"#3B82F6"},
+    {k:"happiness", label:"Felicità", icon:"fa-heart", color:"var(--accent)"},
+    {k:"energy", label:"Energia", icon:"fa-bolt", color:"var(--primary)"},
+    {k:"hygiene", label:"Igiene", icon:"fa-soap", color:"var(--mint)"},
+  ];
+  const lvl=pet.level||1, expNow=pet.exp||0, expNeed=expForLevel(lvl);
+  const cuddleLeft=cuddleRemaining();
+  $("#screen").innerHTML=`
+    <div class="topbar">
+      <div style="min-width:0;"><div class="muted">Ciao,</div><div class="title">${esc(p.username)} ${p.isAdmin?'<span class="pill pill-admin">ADMIN</span>':''}</div></div>
+      <div class="coin-pill"><i class="fa-solid fa-coins"></i> ${Math.round(pet.coins)}</div>
+    </div>
+    <div class="pet-stage" id="petStage">
+      <div class="pet-emoji ${pet.sleeping?'sleep':(pet.happiness<30?'sad':'')}" id="petEmo">
+        ${emo ? emo : renderPixelSpanFromGrid(pet.equippedSkin?.grid, 60)}
+      </div>
+      <div class="petname">${esc(pet.name)}</div>
+      <div class="stagebadge">${stage.name} · Lv.${lvl} · ${Math.floor(pet.ageMinutes)} min</div>
+      <div style="width:70%; margin:8px auto 0;"><div class="levelbar"><div class="levelbar-fill" style="width:${clamp(expNow/expNeed*100,0,100)}%;"></div></div></div>
+      ${pet.sleeping ? `<div class="muted" style="margin-top:6px;"><i class="fa-solid fa-moon"></i> Sta dormendo…</div>` : ``}
+    </div>
+    <div class="card">
+      <div class="stats">
+        ${statuses.map(s=>`
+          <div class="stat-row">
+            <i class="fa-solid ${s.icon}" style="color:${s.color}"></i>
+            <div class="bar"><div class="bar-fill" style="width:${pet[s.k]}%; background:${s.color};"></div></div>
+            <div style="width:34px; text-align:right; font-weight:800; font-size:12px; flex-shrink:0;">${Math.round(pet[s.k])}</div>
+          </div>`).join("")}
+      </div>
+      <div class="actions-grid">
+        <button class="action-btn" id="actFeed"><i class="fa-solid fa-drumstick-bite"></i>Nutri</button>
+        <button class="action-btn" id="actDrink"><i class="fa-solid fa-glass-water"></i>Bevi</button>
+        <button class="action-btn" id="actClean"><i class="fa-solid fa-soap"></i>Pulisci</button>
+        <button class="action-btn" id="actCuddle" ${cuddleLeft>0?'disabled':''}><i class="fa-solid fa-hand-holding-heart"></i>${cuddleLeft>0?fmtMin(cuddleLeft):'Coccole'}</button>
+      </div>
+      <button class="btn btn-soft btn-block" id="actSleep" style="margin-top:12px;"><i class="fa-solid fa-moon"></i> ${pet.sleeping?'Sveglia':'Fai dormire'}</button>
+    </div>
+    <div class="section-title">Il tuo Otamagochi in breve</div>
+    <div class="card" style="display:flex; gap:14px; align-items:center;">
+      <i class="fa-solid fa-circle-info" style="color:var(--primary); font-size:20px;"></i>
+      <div class="muted" style="font-size:13px;">La felicità si recupera solo giocando ai minigiochi dell'Arcade! Cibo e bevande si comprano nel Negozio (scheda Market).</div>
+    </div>`;
+  $("#actFeed").onclick=()=>openConsumeSheet("food");
+  $("#actDrink").onclick=()=>openConsumeSheet("drink");
+  $("#actClean").onclick=()=>doAction("clean");
+  $("#actCuddle").onclick=()=>doAction("cuddle");
+  $("#actSleep").onclick=()=>doAction("sleep");
+  savePet();
+}
+function renderPixelSpanFromGrid(grid,size){
+  if(!grid) return "🐣";
+  return `<div class="pixel-grid" style="width:${size}px; grid-template-columns:repeat(${GRID_N},1fr); margin:0 auto; padding:0; background:transparent;">
+    ${grid.map(c=>`<div style="aspect-ratio:1; background:${c||'transparent'}; border-radius:1px;"></div>`).join("")}
+  </div>`;
+}
+function floatEmote(container, emoji){
+  const stage=$("#petStage"); if(!stage) return;
+  for(let i=0;i<3;i++){
+    const f=el(`<div class="float-emote" style="left:${40+Math.random()*20}%; top:${30+Math.random()*10}%;">${emoji}</div>`);
+    f.style.animationDelay=(i*0.12)+"s";
+    stage.appendChild(f);
+    setTimeout(()=>f.remove(),1300);
+  }
+}
+async function doAction(type){
+  const pet=PROFILE.pet;
+  if(type==="clean"){
+    pet.hygiene=clamp(pet.hygiene+30,0,100); pet.happiness=clamp(pet.happiness+1,0,100);
+    SND.clean(); floatEmote(null,"✨"); toast("Ora è pulitissimo!","ok");
+  } else if(type==="sleep"){
+    pet.sleeping=!pet.sleeping;
+    SND.sleep(); toast(pet.sleeping?"Buonanotte 🌙":"Sveglio e riposato!","ok");
+  } else if(type==="cuddle"){
+    if(pet.sleeping) return toast("Sta dormendo, lascialo riposare 💤","err");
+    if(cuddleRemaining()>0) return toast("Coccole disponibili tra "+fmtMin(cuddleRemaining()),"err");
+    pet.lastCuddle=Date.now(); pet.coins=(pet.coins||0)+2;
+    addExp(3);
+    SND.play(); floatEmote(null,"💞"); toast(esc(pet.name)+" adora le coccole!","ok");
+  }
+  pet.lastUpdate=Date.now();
+  await savePet();
+  render();
+}
+function openConsumeSheet(kind){
+  const inv=(PROFILE.pet.inventory&&PROFILE.pet.inventory[kind])||{};
+  const catalog = kind==="food"?SHOP_FOOD:SHOP_DRINKS;
+  const owned = Object.entries(inv).filter(([id,n])=>n>0).map(([id,n])=>{ const it=catalog.find(i=>i.id===id); return it?{...it,count:n}:null; }).filter(Boolean);
+  if(!owned.length){
+    openSheet(`
+      <h3 class="center" style="margin-bottom:10px;">${kind==='food'?'Nessun cibo disponibile':'Nessuna bevanda disponibile'}</h3>
+      <p class="muted center">Vai al Negozio (scheda Market) per comprarne!</p>
+      <button class="btn btn-primary btn-block" id="goShop">Vai al Negozio</button>`);
+    $("#goShop").onclick=()=>{ closeSheet(); navigate("market", {marketTab:"shop"}); };
+    return;
+  }
+  openSheet(`<h3 class="center" style="margin-bottom:12px;">${kind==='food'?'Scegli cosa mangiare':'Scegli cosa bere'}</h3>` +
+    owned.map(it=>`
+      <div class="inv-row">
+        ${emojiBadge(it.emoji,30,true)}
+        <div style="flex:1;"><b>${esc(it.name)}</b><div class="muted" style="font-size:12px;">Possiedi: ${it.count}</div></div>
+        <button class="btn btn-primary btn-sm" data-use="${it.id}">Usa</button>
+      </div>`).join(""));
+  document.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>consumeItem(kind,b.dataset.use));
+}
+async function consumeItem(kind,itemId){
+  const catalog= kind==="food"?SHOP_FOOD:SHOP_DRINKS;
+  const item=catalog.find(i=>i.id===itemId); if(!item) return;
+  const pet=PROFILE.pet;
+  pet.inventory=pet.inventory||{food:{},drink:{}};
+  const cur=pet.inventory[kind][itemId]||0;
+  if(cur<=0) return;
+  pet.inventory[kind][itemId]=cur-1;
+  if(kind==="food") pet.hunger=clamp(pet.hunger+item.restore,0,100);
+  else pet.thirst=clamp(pet.thirst+item.restore,0,100);
+  pet.happiness=clamp(pet.happiness+(item.happiness||0),0,100);
+  addExp(2);
+  pet.lastUpdate=Date.now();
+  const ok=await savePet();
+  if(ok){ SND.feed(); floatEmote(null, item.emoji); toast(esc(pet.name)+" ha consumato "+item.name,"ok"); }
+  closeSheet(); render();
+}
+
+/* ================= ARCADE ================= */
+async function renderArcade(){
+  const screen=$("#screen");
+  screen.innerHTML=`
+    <div class="topbar"><div class="title">Arcade</div>
+      <button class="icon-btn" id="btnCreateGame"><i class="fa-solid fa-plus"></i></button>
+    </div>
+    <div id="gamesList"><div class="spinner"></div></div>`;
+  $("#btnCreateGame").onclick=()=>openSandboxBuilder();
+  const qy = collection(db,"minigames");
+  const unsub = onSnapshot(qy, snap=>{
+    const games=[]; snap.forEach(d=>games.push({id:d.id,...d.data()}));
+    games.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const list=$("#gamesList"); if(!list) return;
+    if(!games.length){ list.innerHTML=`<div class="empty-state"><i class="fa-solid fa-gamepad"></i><br>Nessun minigioco ancora.<br>Creane uno tu!</div>`; return; }
+    list.innerHTML=`<div class="grid2">${games.map(g=>`
+      <div class="game-card">
+        <div class="gi">${GAME_ICONS[g.type]||'🎮'}</div>
+        <div style="font-weight:800; font-size:13px;">${esc(g.title)}</div>
+        <div class="muted" style="font-size:11px; margin-bottom:8px;">di ${esc(g.authorName)} ${g.official?'<span class="pill pill-official">Ufficiale</span>':''}</div>
+        <button class="btn btn-primary btn-sm btn-block" data-play="${g.id}">Gioca</button>
+      </div>`).join("")}</div>`;
+    list.querySelectorAll("[data-play]").forEach(b=>b.onclick=()=>{
+      const g=games.find(x=>x.id===b.dataset.play);
+      if(!g) return toast("Minigioco non trovato","err");
+      navigate("playgame", {playGameId:g.id, playGameData:g});
+    });
+  }, err=>{
+    console.error(err);
+    const list=$("#gamesList"); if(list) list.innerHTML=`<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><br>Impossibile caricare i minigiochi.<br>Controlla le regole Firestore.</div>`;
+  });
+  SUBS.push(unsub);
+}
+async function submitMinigame(title,mechanic,config,existingId){
+  const isOfficial=!!PROFILE.isAdmin;
+  const ok = await safeWrite(async ()=>{
+    if(existingId){
+      await updateDoc(doc(db,"minigames",existingId),{title,type:mechanic,config,official:isOfficial});
+    } else {
+      await addDoc(collection(db,"minigames"),{
+        title, type:mechanic, config, authorId:CURRENT_USER.uid, authorName:PROFILE.username,
+        official:isOfficial, createdAt:Date.now(), plays:0
+      });
+    }
+  }, null, "Impossibile pubblicare il minigioco");
+  if(ok){
+    SND.success();
+    toast(existingId?"Minigioco aggiornato!":(isOfficial?"Minigioco ufficiale pubblicato! 👑":"Minigioco pubblicato nell'Arcade! 🎮"),"ok");
+    navigate("arcade");
+  }
+}
+
+/* ---- Sandbox full-screen builder ---- */
+function openSandboxBuilder(options){
+  const ov=el(`<div class="fs-overlay" id="sandboxOverlay">
+    <div class="fs-header">
+      <button class="icon-btn" id="fsBack"><i class="fa-solid fa-arrow-left"></i></button>
+      <h3 style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Sandbox Creator</h3>
+    </div>
+    <div class="fs-body" id="fsBody"></div>
+  </div>`);
+  document.body.appendChild(ov);
+  $("#fsBack").onclick=()=>{ ov.remove(); };
+  if(options && options.editGame){
+    const g=options.editGame;
+    const preset = PRESETS.find(p=>p.mechanic===g.type) || {mechanic:g.type, name:g.title, desc:"", icon:GAME_ICONS[g.type]||"🎮"};
+    TEMP.sandboxTitle=g.title; TEMP.editingGameId=g.id;
+    if(g.type==="quiz"){
+      TEMP.quizQuestions = JSON.parse(JSON.stringify(g.config.questions||[{q:"",opts:["","","",""],correct:0}]));
+      TEMP.quizTitle=g.title;
+    } else {
+      TEMP.sandboxConfig = {...g.config};
+    }
+    renderSandboxForm(preset);
+  } else {
+    renderPresetPicker();
+  }
+}
+function renderPresetPicker(){
+  const body=$("#fsBody");
+  body.innerHTML=`<p class="muted" style="margin-bottom:14px;">Scegli un modello di partenza: potrai modificare tutte le regole prima di pubblicare.</p>` +
+    PRESETS.map((p,i)=>`<div class="preset-card" data-preset="${i}" style="cursor:pointer;"><div class="pi">${p.icon}</div><div><b>${esc(p.name)}</b><div class="muted" style="font-size:12px;">${esc(p.desc)}</div></div></div>`).join("");
+  body.querySelectorAll("[data-preset]").forEach(c=>c.onclick=()=>{
+    const p=PRESETS[+c.dataset.preset];
+    TEMP.sandboxTitle=p.name; TEMP.editingGameId=null;
+    if(p.mechanic==="quiz"){ TEMP.quizQuestions=[{q:"",opts:["","","",""],correct:0}]; TEMP.quizTitle=""; }
+    else { TEMP.sandboxConfig={}; (MECH_SCHEMAS[p.mechanic]||[]).forEach(f=>TEMP.sandboxConfig[f.key]=f.default); }
+    renderSandboxForm(p);
+  });
+}
+function renderSandboxForm(preset){
+  const body=$("#fsBody");
+  if(preset.mechanic==="quiz"){
+    body.innerHTML=`<button class="btn btn-soft btn-sm" id="backPreset" style="margin-bottom:14px;"><i class="fa-solid fa-arrow-left"></i> Cambia modello</button><div id="quizBuilderHolder"></div>`;
+    $("#backPreset").onclick=renderPresetPicker;
+    renderQuizBuilderInto($("#quizBuilderHolder"));
+    return;
+  }
+  const schema=MECH_SCHEMAS[preset.mechanic]||[];
+  body.innerHTML=`
+    <button class="btn btn-soft btn-sm" id="backPreset" style="margin-bottom:14px;"><i class="fa-solid fa-arrow-left"></i> Cambia modello</button>
+    <div class="field"><label>Titolo del gioco</label><input id="sb_title" value="${esc(TEMP.sandboxTitle||preset.name)}"></div>
+    ${schema.map(f=>`
+      <div class="field"><label>${esc(f.label)}</label>
+        <input data-fk="${f.key}" type="${f.type==='number'?'number':'text'}" value="${esc(TEMP.sandboxConfig[f.key])}" ${f.min!==undefined?`min="${f.min}"`:''} ${f.max!==undefined?`max="${f.max}"`:''}>
+      </div>`).join("")}
+    <div class="section-title">Anteprima live</div>
+    <div class="card" id="livePreview" style="padding:16px;"></div>
+    <div class="section-title">Riepilogo regole</div>
+    <div class="rules-summary" id="rulesSummary"></div>
+    <button class="btn btn-primary btn-block" id="publishSandbox" style="margin-top:16px;"><i class="fa-solid fa-cloud-arrow-up"></i> ${TEMP.editingGameId?'Salva modifiche':'Pubblica minigioco'}</button>`;
+  $("#backPreset").onclick=renderPresetPicker;
+  function syncSummary(){
+    $("#rulesSummary").innerHTML = buildRulesSummary(preset.mechanic, TEMP.sandboxConfig, $("#sb_title").value||preset.name);
+    const lp=$("#livePreview"); if(lp){ lp.innerHTML = buildLivePreview(preset.mechanic, TEMP.sandboxConfig); wireEmojiFallbacks(lp); }
+  }
+  body.querySelectorAll("[data-fk]").forEach(inp=>inp.oninput=()=>{
+    const f=schema.find(x=>x.key===inp.dataset.fk);
+    TEMP.sandboxConfig[f.key]= f.type==="number" ? (+inp.value||f.default) : inp.value;
+    syncSummary();
+  });
+  $("#sb_title").oninput=syncSummary;
+  syncSummary();
+  $("#publishSandbox").onclick=async ()=>{
+    const title=$("#sb_title").value.trim();
+    if(!title) return toast("Dai un titolo al tuo gioco","err");
+    await submitMinigame(title, preset.mechanic, {...TEMP.sandboxConfig}, TEMP.editingGameId);
+    document.getElementById("sandboxOverlay")?.remove();
+  };
+}
+function buildRulesSummary(mechanic,cfg,title){
+  const base=`<b>${esc(title)}</b><br>Durata: ${cfg.duration||'-'}s`;
+  switch(mechanic){
+    case "catch": return base+`<br>Obiettivo: colpisci ${esc(cfg.target)} evitando ${esc(cfg.decoy)}<br>Punteggio richiesto: ${cfg.winScore}<br>Velocità: un bersaglio ogni ${cfg.spawn}ms`;
+    case "memory": return `<b>${esc(title)}</b><br>Trova ${cfg.pairs} coppie entro ${cfg.duration}s`;
+    case "whack": return base+`<br>Colpisci ${esc(cfg.target)} in ${cfg.holes} buche<br>Comparsa ogni ${cfg.popSpeed}ms · Punteggio richiesto: ${cfg.winScore}`;
+    case "colormatch": return base+`<br>Tocca il colore corretto · Punteggio richiesto: ${cfg.winScore}`;
+    case "math": return base+`<br>Numeri fino a ${cfg.maxNumber} · Risposte corrette richieste: ${cfg.winScore}`;
+    case "dodge": return base+`<br>${cfg.lanes} corsie · Massimo ${cfg.maxHits} colpi subiti`;
+    case "simon": return `<b>${esc(title)}</b><br>Ripeti la sequenza fino a lunghezza ${cfg.winLength} (velocità ${cfg.speed}ms)`;
+    case "typing": return base+`<br>Parole corrette richieste: ${cfg.winScore}`;
+    case "rhythm": return base+`<br>Colpi precisi richiesti: ${cfg.winScore} (ciclo ${cfg.speed}ms)`;
+    default: return base;
+  }
+}
+function buildLivePreview(mechanic,cfg){
+  switch(mechanic){
+    case "catch":
+      return `<div style="position:relative; height:130px; background:#cfe8ff; border-radius:14px; overflow:hidden;">
+        <div style="position:absolute; left:28%; top:32%; font-size:32px; animation:bob 1.6s ease-in-out infinite;">${esc(cfg.target||'⭐')}</div>
+        <div style="position:absolute; left:66%; top:58%; font-size:32px; animation:bob 1.4s ease-in-out infinite;">${esc(cfg.decoy||'💣')}</div>
+      </div>`;
+    case "whack":{
+      const holes=clamp(cfg.holes||9,4,9); const cols=holes<=4?2:3;
+      return `<div class="whack-grid" style="grid-template-columns:repeat(${cols},1fr);">${Array.from({length:holes}).map((_,i)=>`<div class="whack-hole" style="height:44px; font-size:22px;">${i===1?esc(cfg.target||'🐹'):''}</div>`).join("")}</div>`;
+    }
+    case "memory":{
+      const n=Math.min(6,cfg.pairs||6);
+      return `<div class="memory-grid" style="grid-template-columns:repeat(${Math.min(4,n)},1fr);">${Array.from({length:n}).map(()=>`<div class="memory-card" style="height:38px;"></div>`).join("")}</div>`;
+    }
+    case "colormatch":
+      return `<div class="center" style="font-weight:800; margin-bottom:10px;">Tocca: Rosso</div><div style="display:flex; gap:8px; justify-content:center;">${COLOR_POOL.slice(0,4).map(c=>`<div style="width:38px; height:38px; border-radius:10px; background:${c.h};"></div>`).join("")}</div>`;
+    case "math":
+      return `<div class="center" style="font-size:24px; font-weight:800;">${1+Math.floor((cfg.maxNumber||20)/3)} + ${1+Math.floor((cfg.maxNumber||20)/4)} = ?</div>`;
+    case "dodge":{
+      const lanes=clamp(cfg.lanes||3,2,4);
+      return `<div style="display:flex; gap:6px; height:96px;">${Array.from({length:lanes}).map((_,i)=>`<div style="flex:1; background:#dff0ff; border-radius:8px; position:relative;">${i===1?'<div style="position:absolute; top:6px; left:50%; transform:translateX(-50%); font-size:22px;">☄️</div>':''}${i===Math.floor(lanes/2)?'<div style="position:absolute; bottom:4px; left:50%; transform:translateX(-50%); font-size:22px;">🙂</div>':''}</div>`).join("")}</div>`;
+    }
+    case "simon":
+      return `<div class="simon-grid" style="width:120px;">${SIMON_COLORS.map(c=>`<div style="aspect-ratio:1; background:${c}; border-radius:10px; opacity:.8;"></div>`).join("")}</div>`;
+    case "typing":
+      return `<div class="center" style="font-size:22px; font-weight:800; letter-spacing:1px;">${esc((cfg.words||'gatto').split(",")[0].trim()||'parola')}</div>`;
+    case "rhythm":
+      return `<div class="rhythm-wrap" style="width:100px; height:100px; margin:6px auto;"><div class="rhythm-target"></div><div class="rhythm-ring" style="transform:scale(1.3);"></div></div>`;
+    default: return `<p class="muted center">Nessuna anteprima disponibile</p>`;
+  }
+}
+function renderQuizBuilderInto(holder){
+  const qs=TEMP.quizQuestions;
+  holder.innerHTML=`
+    <div class="field"><label>Titolo del quiz</label><input id="g_title" value="${esc(TEMP.quizTitle||'')}" placeholder="es. Quiz sugli animali"></div>
+    <div id="qList"></div>
+    <button class="btn btn-soft btn-block" id="addQ"><i class="fa-solid fa-plus"></i> Aggiungi domanda</button>
+    <div style="height:14px;"></div>
+    <button class="btn btn-primary btn-block" id="submitQuiz"><i class="fa-solid fa-paper-plane"></i> ${TEMP.editingGameId?'Salva modifiche':'Pubblica quiz'}</button>`;
+  const qList=$("#qList");
+  function redrawQ(){
+    qList.innerHTML = qs.map((qq,i)=>`
+      <div class="card">
+        <div class="field"><label>Domanda ${i+1}</label><input data-qi="${i}" class="qtext" value="${esc(qq.q)}" placeholder="Scrivi la domanda"></div>
+        ${qq.opts.map((o,oi)=>`
+          <div class="row field">
+            <input data-qi="${i}" data-oi="${oi}" class="qopt" value="${esc(o)}" placeholder="Opzione ${oi+1}">
+            <label style="display:flex; align-items:center; gap:6px; white-space:nowrap; flex:0 0 auto;">
+              <input type="radio" name="correct${i}" data-qi="${i}" data-oi="${oi}" class="qcorrect" ${qq.correct===oi?'checked':''} style="width:18px;">Giusta
+            </label>
+          </div>`).join("")}
+        ${qs.length>1?`<button class="btn btn-danger btn-sm" data-delq="${i}"><i class="fa-solid fa-trash"></i> Rimuovi domanda</button>`:``}
+      </div>`).join("");
+    qList.querySelectorAll(".qtext").forEach(inp=>inp.oninput=()=>{qs[+inp.dataset.qi].q=inp.value;});
+    qList.querySelectorAll(".qopt").forEach(inp=>inp.oninput=()=>{qs[+inp.dataset.qi].opts[+inp.dataset.oi]=inp.value;});
+    qList.querySelectorAll(".qcorrect").forEach(inp=>inp.onchange=()=>{qs[+inp.dataset.qi].correct=+inp.dataset.oi;});
+    qList.querySelectorAll("[data-delq]").forEach(b=>b.onclick=()=>{qs.splice(+b.dataset.delq,1); redrawQ();});
+  }
+  redrawQ();
+  $("#addQ").onclick=()=>{qs.push({q:"",opts:["","","",""],correct:0}); redrawQ();};
+  $("#submitQuiz").onclick=async ()=>{
+    const title=holder.querySelector("#g_title").value.trim(); TEMP.quizTitle=title;
+    if(!title) return toast("Dai un titolo al quiz","err");
+    for(const qq of qs){ if(!qq.q.trim()||qq.opts.some(o=>!o.trim())) return toast("Completa tutte le domande e opzioni","err"); }
+    await submitMinigame(title,"quiz",{questions:qs}, TEMP.editingGameId);
+    document.getElementById("sandboxOverlay")?.remove();
+  };
+}
+
+/* ---- Play dispatcher ---- */
+function renderPlayGame(){
+  const g=TEMP.playGameData;
+  if(!g){ toast("Apri il gioco dall'Arcade","err"); navigate("arcade"); return; }
+  const map={
+    catch:renderPlayReflex, quiz:renderPlayQuiz, memory:renderPlayMemory, whack:renderPlayWhack,
+    colormatch:renderPlayColorMatch, math:renderPlayMath, dodge:renderPlayDodge, simon:renderPlaySimon,
+    typing:renderPlayTyping, rhythm:renderPlayRhythm
+  };
+  (map[g.type]||renderPlayReflex)(g);
+}
+async function finishSandboxGame(game, rawScore, won, label){
+  const coinsEarned=Math.max(1, Math.round(rawScore*0.7 + (won?6:0)));
+  const expEarned=Math.max(1, Math.round(rawScore*0.5 + (won?5:2)));
+  PROFILE.pet.coins=(PROFILE.pet.coins||0)+coinsEarned;
+  PROFILE.pet.happiness=clamp(PROFILE.pet.happiness+(won?14:7),0,100);
+  addExp(expEarned);
+  await savePet();
+  try{ await updateDoc(doc(db,"minigames",game.id),{plays:increment(1)}); }catch(e){ console.error(e); }
+  SND.success();
+  $("#screen").innerHTML=`<div class="card center">
+    <div style="font-size:40px;">${won?'🏆':'🙂'}</div>
+    <h3>${won?'Hai vinto!':'Bel tentativo!'}</h3>
+    <p class="muted">${label} · Monete: +${coinsEarned} · EXP: +${expEarned}</p>
+    <button class="btn btn-primary btn-block" id="backArcade">Torna all'Arcade</button></div>`;
+  $("#backArcade").onclick=()=>navigate("arcade");
+}
+function renderPlayReflex(g){
+  const c=g.config;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Tocca ${esc(c.target)} ed evita ${esc(c.decoy)}! Tempo: <span id="timeLeft">${c.duration}</span>s</p>
+    <div class="reflex-arena" id="arena"></div>`;
+  $("#back").onclick=()=>{stopReflex(); navigate("arcade");};
+  let score=0, timeLeft=c.duration, spawnTimer=null, countTimer=null, running=true;
+  const arena=$("#arena");
+  function spawnTarget(){
+    if(!running) return;
+    const isDecoy = Math.random()<0.35;
+    const t=el(`<button class="reflex-target">${isDecoy?c.decoy:c.target}</button>`);
+    const x=10+Math.random()*80, y=10+Math.random()*80;
+    t.style.left=x+"%"; t.style.top=y+"%";
+    t.onclick=()=>{
+      if(!running) return;
+      if(isDecoy){ score=Math.max(0,score-2); SND.error(); shakeArena(); }
+      else { score++; SND.coin(); }
+      $("#scoreVal").textContent=score;
+      t.remove();
+    };
+    arena.appendChild(t);
+    setTimeout(()=>t.remove(), Math.max(500,c.spawn*1.4));
+  }
+  function shakeArena(){ arena.style.animation="shake .3s"; setTimeout(()=>arena.style.animation="",300); }
+  spawnTimer=setInterval(spawnTarget, c.spawn);
+  countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0) endGame();
+  },1000);
+  function stopReflex(){ running=false; clearInterval(spawnTimer); clearInterval(countTimer); }
+  function endGame(){ stopReflex(); finishSandboxGame(g, score, score>=c.winScore, `Punteggio: ${score}`); }
+}
+function renderPlayQuiz(g){
+  const questions=g.config.questions;
+  TEMP.quizIndex=0; TEMP.quizScore=0;
+  function showQ(){
+    const i=TEMP.quizIndex;
+    if(i>=questions.length) return finishQuiz();
+    const q=questions[i];
+    $("#screen").innerHTML=`
+      <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+        <div class="coin-pill">${i+1}/${questions.length}</div></div>
+      <div class="card"><h3 style="margin-bottom:14px;">${esc(q.q)}</h3>
+        ${q.opts.map((o,oi)=>`<button class="quiz-opt" data-oi="${oi}">${esc(o)}</button>`).join("")}
+      </div>`;
+    $("#back").onclick=()=>navigate("arcade");
+    $("#screen").querySelectorAll(".quiz-opt").forEach(b=>b.onclick=()=>{
+      $("#screen").querySelectorAll(".quiz-opt").forEach(x=>x.disabled=true);
+      const oi=+b.dataset.oi;
+      if(oi===q.correct){ b.classList.add("correct"); TEMP.quizScore++; SND.coin(); }
+      else { b.classList.add("wrong"); SND.error(); $("#screen").querySelectorAll(".quiz-opt")[q.correct].classList.add("correct"); }
+      setTimeout(()=>{ TEMP.quizIndex++; showQ(); },900);
+    });
+  }
+  function finishQuiz(){
+    const pct = questions.length? TEMP.quizScore/questions.length : 0;
+    finishSandboxGame(g, TEMP.quizScore*3, pct>=0.6, `Risposte corrette: ${TEMP.quizScore}/${questions.length}`);
+  }
+  showQ();
+}
+function renderPlayMemory(g){
+  const c=g.config; const pairsN=clamp(c.pairs||6,3,10);
+  const pool=["🍎","🍌","🍇","🍓","🍒","🍉","🥝","🍑","🍍","🥥","🍋","🍊"];
+  let deck=[]; for(let i=0;i<pairsN;i++){deck.push(pool[i],pool[i]);}
+  deck=deck.sort(()=>Math.random()-0.5);
+  let matched=0, first=null, lock=false, timeLeft=c.duration||60;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill">⏱ <span id="timeLeft">${timeLeft}</span>s</div></div>
+    <div class="memory-grid" id="mgrid" style="grid-template-columns:repeat(${Math.min(4,Math.ceil(Math.sqrt(deck.length)))},1fr);"></div>`;
+  $("#back").onclick=()=>{clearInterval(timer); navigate("arcade");};
+  const grid=$("#mgrid");
+  grid.innerHTML=deck.map((e,i)=>`<div class="memory-card" data-i="${i}" data-e="${e}"></div>`).join("");
+  const cards=[...grid.children];
+  cards.forEach(card=>card.onclick=()=>{
+    if(lock||card.classList.contains("flipped")||card.classList.contains("matched")) return;
+    card.textContent=card.dataset.e; card.classList.add("flipped"); SND.click();
+    if(!first){ first=card; return; }
+    lock=true;
+    if(first.dataset.e===card.dataset.e){
+      first.classList.add("matched"); card.classList.add("matched"); matched++;
+      SND.coin(); first=null; lock=false;
+      if(matched===pairsN) endMemory(true);
+    } else {
+      setTimeout(()=>{ first.textContent=''; first.classList.remove("flipped"); card.textContent=''; card.classList.remove("flipped"); first=null; lock=false; },700);
+    }
+  });
+  const timer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0) endMemory(false);
+  },1000);
+  function endMemory(won){ clearInterval(timer); finishSandboxGame(g, matched*3, won, `Coppie trovate: ${matched}/${pairsN}`); }
+}
+function renderPlayWhack(g){
+  const c=g.config; const holes=clamp(c.holes||9,4,9); const cols=holes<=4?2:3;
+  let score=0, timeLeft=c.duration||30, active=-1, popTimer=null, countTimer=null, running=true;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Colpisci ${esc(c.target||'🐹')}! Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="whack-grid" id="wgrid" style="grid-template-columns:repeat(${cols},1fr);"></div>`;
+  $("#back").onclick=()=>{stop(); navigate("arcade");};
+  const grid=$("#wgrid");
+  grid.innerHTML=Array.from({length:holes}).map((_,i)=>`<div class="whack-hole" data-i="${i}"></div>`).join("");
+  const cells=[...grid.children];
+  cells.forEach(cell=>cell.onclick=()=>{
+    if(+cell.dataset.i===active && running){
+      score++; SND.coin(); cell.textContent=''; active=-1; $("#scoreVal").textContent=score;
+    }
+  });
+  function pop(){
+    if(!running) return;
+    if(active>=0) cells[active].textContent='';
+    active=Math.floor(Math.random()*holes);
+    cells[active].textContent=c.target||'🐹';
+    setTimeout(()=>{ if(cells[active]) cells[active].textContent=''; },Math.max(300,(c.popSpeed||900)*0.8));
+  }
+  popTimer=setInterval(pop, c.popSpeed||900);
+  countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0) end();
+  },1000);
+  function stop(){ running=false; clearInterval(popTimer); clearInterval(countTimer); }
+  function end(){ stop(); finishSandboxGame(g, score, score>=(c.winScore||12), `Punteggio: ${score}`); }
+}
+function renderPlayColorMatch(g){
+  const c=g.config;
+  let score=0, timeLeft=c.duration||30, running=true;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="card center"><h2 id="targetWord" style="font-size:26px;"></h2></div>
+    <div class="grid2" id="swatches" style="gap:14px;"></div>`;
+  $("#back").onclick=()=>{running=false; clearInterval(countTimer); navigate("arcade");};
+  function round(){
+    const target=COLOR_POOL[Math.floor(Math.random()*COLOR_POOL.length)];
+    let others=COLOR_POOL.filter(x=>x.n!==target.n).sort(()=>Math.random()-0.5).slice(0,3);
+    const opts=[target,...others].sort(()=>Math.random()-0.5);
+    $("#targetWord").textContent="Tocca: "+target.n;
+    $("#swatches").innerHTML=opts.map(o=>`<button class="color-swatch-btn" style="background:${o.h}; height:70px;" data-n="${o.n}"></button>`).join("");
+    $("#swatches").querySelectorAll("[data-n]").forEach(b=>b.onclick=()=>{
+      if(!running) return;
+      if(b.dataset.n===target.n){ score++; SND.coin(); } else { SND.error(); }
+      $("#scoreVal").textContent=score;
+      round();
+    });
+  }
+  round();
+  const countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0){ running=false; clearInterval(countTimer); finishSandboxGame(g, score, score>=(c.winScore||10), `Punteggio: ${score}`); }
+  },1000);
+}
+function renderPlayMath(g){
+  const c=g.config; const maxN=c.maxNumber||20;
+  let score=0, timeLeft=c.duration||40, running=true;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="card center"><h2 id="mathQ" style="font-size:30px;"></h2></div>
+    <div class="grid2" id="mathOpts"></div>`;
+  $("#back").onclick=()=>{running=false; clearInterval(countTimer); navigate("arcade");};
+  function round(){
+    const a=1+Math.floor(Math.random()*maxN), b=1+Math.floor(Math.random()*maxN);
+    const op=Math.random()<0.5?'+':'-';
+    const correct= op==='+'? a+b : a-b;
+    $("#mathQ").textContent=`${a} ${op} ${b} = ?`;
+    let opts=new Set([correct]);
+    while(opts.size<4) opts.add(correct + (Math.floor(Math.random()*11)-5));
+    const arr=[...opts].sort(()=>Math.random()-0.5);
+    $("#mathOpts").innerHTML=arr.map(v=>`<button class="btn btn-soft" data-v="${v}">${v}</button>`).join("");
+    $("#mathOpts").querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{
+      if(!running) return;
+      if(+b.dataset.v===correct){ score++; SND.coin(); } else { SND.error(); }
+      $("#scoreVal").textContent=score;
+      round();
+    });
+  }
+  round();
+  const countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0){ running=false; clearInterval(countTimer); finishSandboxGame(g, score, score>=(c.winScore||8), `Risposte corrette: ${score}`); }
+  },1000);
+}
+function renderPlayTyping(g){
+  const c=g.config; const words=(c.words||"gatto,cane,sole").split(",").map(w=>w.trim()).filter(Boolean);
+  let score=0, timeLeft=c.duration||40, running=true, current='';
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="card center"><h2 id="wordShow" style="font-size:28px; letter-spacing:2px;"></h2></div>
+    <div class="field"><input id="typeInput" placeholder="Scrivi qui e premi Invio" autocomplete="off"></div>`;
+  $("#back").onclick=()=>{running=false; clearInterval(countTimer); navigate("arcade");};
+  function nextWord(){ current=words[Math.floor(Math.random()*words.length)]; $("#wordShow").textContent=current; $("#typeInput").value=''; }
+  nextWord();
+  $("#typeInput").focus();
+  $("#typeInput").onkeydown=(e)=>{
+    if(e.key==="Enter"){
+      if(!running) return;
+      if($("#typeInput").value.trim().toLowerCase()===current.toLowerCase()){ score++; SND.coin(); } else { SND.error(); }
+      $("#scoreVal").textContent=score;
+      nextWord();
+    }
+  };
+  const countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0){ running=false; clearInterval(countTimer); finishSandboxGame(g, score, score>=(c.winScore||8), `Parole corrette: ${score}`); }
+  },1000);
+}
+function renderPlayDodge(g){
+  const c=g.config; const lanes=clamp(c.lanes||3,2,4);
+  let playerLane=Math.floor(lanes/2), hits=0, timeLeft=c.duration||30, running=true, spawnTimer=null, countTimer=null, moveTimer=null;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill">💥 <span id="hitsVal">0</span>/${c.maxHits??3}</div></div>
+    <p class="muted center">Tocca una corsia per spostarti! Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="dodge-lanes" id="lanes"></div>`;
+  $("#back").onclick=()=>{stop(); navigate("arcade");};
+  const laneEls=[];
+  const wrap=$("#lanes");
+  for(let i=0;i<lanes;i++){
+    const laneDiv=el(`<div class="dodge-lane" data-lane="${i}"></div>`);
+    laneDiv.onclick=()=>{ playerLane=i; renderPlayer(); };
+    wrap.appendChild(laneDiv); laneEls.push(laneDiv);
+  }
+  function renderPlayer(){
+    laneEls.forEach((l,i)=>{ let p=l.querySelector(".dodge-player"); if(i===playerLane){ if(!p){ p=el('<div class="dodge-player">🙂</div>'); l.appendChild(p);} } else if(p){ p.remove(); } });
+  }
+  renderPlayer();
+  const obstacles=[];
+  function spawnObstacle(){
+    if(!running) return;
+    const lane=Math.floor(Math.random()*lanes);
+    const o=el('<div class="dodge-obj">☄️</div>'); o.style.top='0%';
+    laneEls[lane].appendChild(o);
+    obstacles.push({el:o, lane, top:0});
+  }
+  spawnTimer=setInterval(spawnObstacle, c.spawnSpeed||700);
+  moveTimer=setInterval(()=>{
+    for(let i=obstacles.length-1;i>=0;i--){
+      const ob=obstacles[i]; ob.top+=8; ob.el.style.top=ob.top+"%";
+      if(ob.top>=88){
+        if(ob.lane===playerLane){
+          hits++; $("#hitsVal").textContent=hits; SND.error();
+          if(hits>(c.maxHits??3)){ ob.el.remove(); obstacles.splice(i,1); end(false); continue; }
+        }
+        ob.el.remove(); obstacles.splice(i,1);
+      }
+    }
+  },90);
+  countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0) end(true);
+  },1000);
+  function stop(){ running=false; clearInterval(spawnTimer); clearInterval(countTimer); clearInterval(moveTimer); }
+  function end(won){ if(!running) return; stop(); const score=Math.max(0, 20-hits*3); finishSandboxGame(g, score, won, `Colpi subiti: ${hits}`); }
+}
+function renderPlaySimon(g){
+  const c=g.config;
+  let sequence=[], userStep=0, running=true, accepting=false;
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill">🔢 <span id="lenVal">0</span></div></div>
+    <p class="muted center" id="simonMsg">Guarda la sequenza…</p>
+    <div class="simon-grid" id="sgrid"></div>`;
+  $("#back").onclick=()=>{running=false; navigate("arcade");};
+  $("#sgrid").innerHTML=SIMON_COLORS.map((cc,i)=>`<button class="simon-pad" data-i="${i}" style="background:${cc};"></button>`).join("");
+  const pads=[...$("#sgrid").children];
+  pads.forEach(p=>p.onclick=()=>{
+    if(!accepting||!running) return;
+    lightPad(+p.dataset.i);
+    if(+p.dataset.i===sequence[userStep]){
+      userStep++;
+      if(userStep===sequence.length){
+        accepting=false; $("#lenVal").textContent=sequence.length;
+        if(sequence.length>=(c.winLength||8)) return end(true);
+        setTimeout(nextRound,700);
+      }
+    } else { accepting=false; end(false); }
+  });
+  function lightPad(i){ pads[i].classList.add("lit"); SND.click(); setTimeout(()=>pads[i].classList.remove("lit"),250); }
+  function nextRound(){
+    sequence.push(Math.floor(Math.random()*4));
+    userStep=0; accepting=false; $("#simonMsg").textContent="Guarda la sequenza…";
+    let i=0;
+    const t=setInterval(()=>{
+      lightPad(sequence[i]); i++;
+      if(i>=sequence.length){ clearInterval(t); accepting=true; $("#simonMsg").textContent="Tocca a te!"; }
+    }, c.speed||600);
+  }
+  nextRound();
+  function end(won){ if(!running) return; running=false; finishSandboxGame(g, sequence.length, won, `Sequenza raggiunta: ${sequence.length}`); }
+}
+function renderPlayRhythm(g){
+  const c=g.config; const cycleMs=c.speed||1400;
+  let score=0, timeLeft=c.duration||30, running=true, startT=performance.now();
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">${esc(g.title)}</div>
+      <div class="coin-pill"><i class="fa-solid fa-star"></i> <span id="scoreVal">0</span></div></div>
+    <p class="muted center">Tocca quando l'anello combacia! Tempo: <span id="timeLeft">${timeLeft}</span>s</p>
+    <div class="rhythm-wrap"><div class="rhythm-target"></div><div class="rhythm-ring" id="ring"></div></div>
+    <button class="btn btn-accent btn-block" id="tapBtn">TOCCA</button>`;
+  $("#back").onclick=()=>{running=false; navigate("arcade");};
+  function frame(now){
+    if(!running) return;
+    const phase=((now-startT)%cycleMs)/cycleMs;
+    const scale=1+(1-phase)*0.9;
+    const ring=$("#ring"); if(ring) ring.style.transform=`scale(${scale})`;
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  $("#tapBtn").onclick=()=>{
+    if(!running) return;
+    const now=performance.now();
+    const phase=((now-startT)%cycleMs)/cycleMs;
+    const dist=Math.min(phase, 1-phase);
+    if(dist<0.08){ score++; SND.coin(); } else { SND.error(); }
+    $("#scoreVal").textContent=score;
+  };
+  const countTimer=setInterval(()=>{
+    timeLeft--; const tl=$("#timeLeft"); if(tl) tl.textContent=timeLeft;
+    if(timeLeft<=0){ running=false; clearInterval(countTimer); finishSandboxGame(g, score, score>=(c.winScore||10), `Colpi precisi: ${score}`); }
+  },1000);
+}
+
+/* ================= PIXEL EDITOR ================= */
+function renderPixelEditor(){
+  TEMP.pixGrid = TEMP.pixGrid || Array(GRID_N*GRID_N).fill(null);
+  TEMP.pixColor = TEMP.pixColor || PALETTE[0];
+  const screen=$("#screen");
+  screen.innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">Editor pixel art</div><div style="width:40px;"></div></div>
+    <div class="card center">
+      <div class="pixel-grid" id="pgrid" style="width:min(260px,72vw); grid-template-columns:repeat(${GRID_N},1fr);"></div>
+    </div>
+    <div class="palette" id="palette"></div>
+    <div class="row" style="margin-bottom:10px;">
+      <button class="btn btn-soft" id="btnEraser"><i class="fa-solid fa-eraser"></i> Gomma</button>
+      <button class="btn btn-danger" id="btnClear"><i class="fa-solid fa-trash"></i> Pulisci</button>
+    </div>
+    <div class="field"><label>Nome skin</label><input id="skinName" value="${esc(TEMP.editingSkinName||'')}" placeholder="es. Drago di fuoco"></div>
+    <div class="row">
+      <button class="btn btn-soft btn-block" id="btnApply"><i class="fa-solid fa-paw"></i> Applica al pet</button>
+      <button class="btn btn-primary btn-block" id="btnPublish"><i class="fa-solid fa-cloud-arrow-up"></i> ${TEMP.editingSkinId?'Salva modifiche':'Pubblica'}</button>
+    </div>`;
+  $("#back").onclick=()=>navigate(TEMP.editingSkinId?"market":"home");
+  const pgrid=$("#pgrid");
+  pgrid.innerHTML = TEMP.pixGrid.map((c,i)=>`<div class="pixel-cell" data-i="${i}" style="${c?`background:${c};`:''}"></div>`).join("");
+  function paint(i,erase){
+    TEMP.pixGrid[i] = erase? null : TEMP.pixColor;
+    if(!TEMP.pixGrid[i]) pgrid.children[i].removeAttribute("style");
+    else pgrid.children[i].style.background = TEMP.pixGrid[i];
+  }
+  let painting=false, eraseMode=false;
+  pgrid.addEventListener("pointerdown",e=>{ if(e.target.dataset.i!==undefined){painting=true; paint(+e.target.dataset.i, eraseMode); SND.click();} });
+  pgrid.addEventListener("pointerover",e=>{ if(painting && e.target.dataset.i!==undefined) paint(+e.target.dataset.i, eraseMode); });
+  window.addEventListener("pointerup",()=>painting=false);
+  $("#palette").innerHTML = PALETTE.map(c=>`<div class="swatch ${c===TEMP.pixColor&&!eraseMode?'selected':''}" data-c="${c}" style="background:${c};"></div>`).join("");
+  $("#palette").querySelectorAll(".swatch").forEach(s=>s.onclick=()=>{ TEMP.pixColor=s.dataset.c; eraseMode=false; render(); });
+  $("#btnEraser").onclick=()=>{ eraseMode=true; toast("Modalità gomma attiva","ok"); };
+  $("#btnClear").onclick=()=>{ TEMP.pixGrid=Array(GRID_N*GRID_N).fill(null); render(); };
+  $("#btnApply").onclick=async ()=>{
+    PROFILE.pet.equippedSkin = {id:"local_"+uidLite(), grid:[...TEMP.pixGrid]};
+    const ok=await savePet();
+    if(ok){ SND.success(); toast("Skin applicata al tuo pet!","ok"); navigate("home"); }
+  };
+  $("#btnPublish").onclick=async ()=>{
+    const name=$("#skinName").value.trim();
+    if(!name) return toast("Dai un nome alla tua skin","err");
+    if(TEMP.pixGrid.every(c=>!c)) return toast("Disegna qualcosa prima di pubblicare","err");
+    const isOfficial=!!PROFILE.isAdmin;
+    if(TEMP.editingSkinId){
+      const ok=await safeWrite(async ()=>{
+        await updateDoc(doc(db,"skins",TEMP.editingSkinId),{name, grid:[...TEMP.pixGrid], official:isOfficial});
+      }, "Skin aggiornata!", "Impossibile aggiornare la skin");
+      if(ok) navigate("market");
+      return;
+    }
+    let newId=null;
+    const ok=await safeWrite(async ()=>{
+      const ref=await addDoc(collection(db,"skins"),{
+        name, grid:[...TEMP.pixGrid], authorId:CURRENT_USER.uid, authorName:PROFILE.username,
+        published:true, official:isOfficial, downloads:0, createdAt:Date.now()
+      });
+      newId=ref.id;
+      await updateDoc(doc(db,"users",CURRENT_USER.uid), { ownedSkins: arrayUnion({id:ref.id,name,grid:[...TEMP.pixGrid],authorName:PROFILE.username}) });
+    }, isOfficial?"Skin ufficiale pubblicata! 👑":"Skin pubblicata nel Marketplace! 🎨", "Impossibile pubblicare la skin");
+    if(ok){
+      if(!PROFILE.ownedSkins) PROFILE.ownedSkins=[];
+      PROFILE.ownedSkins.push({id:newId,name,grid:[...TEMP.pixGrid],authorName:PROFILE.username});
+      navigate("market");
+    }
+  };
+}
+
+/* ================= MARKET (skin + negozio) ================= */
+async function renderMarket(){
+  const tab=TEMP.marketTab||"skin";
+  const screen=$("#screen");
+  screen.innerHTML=`
+    <div class="topbar"><div class="title">Market</div></div>
+    <div class="tabbar2">
+      <button data-mt="skin" class="${tab==='skin'?'active':''}">Skin</button>
+      <button data-mt="shop" class="${tab==='shop'?'active':''}">Negozio</button>
+    </div>
+    <div id="marketBody"></div>`;
+  screen.querySelectorAll("[data-mt]").forEach(b=>b.onclick=()=>{TEMP.marketTab=b.dataset.mt; render();});
+  if(TEMP._marketUnsub){ try{TEMP._marketUnsub();}catch(e){} TEMP._marketUnsub=null; }
+  if(tab==="shop") renderShopTab(); else renderSkinMarketTab();
+}
+function renderShopTab(){
+  const box=$("#marketBody");
+  const lvl=PROFILE.pet.level||1, coins=PROFILE.pet.coins||0, isAdm=!!PROFILE.isAdmin;
+  function itemCard(item,kind){
+    const locked = !isAdm && lvl<item.minLevel;
+    return `<div class="shop-item ${locked?'locked':''}">
+      ${locked?`<div class="lock-badge">Lv.${item.minLevel}</div>`:''}
+      ${emojiBadge(item.emoji,34)}
+      <div style="font-weight:800; font-size:12px;">${esc(item.name)}</div>
+      <div class="muted" style="font-size:11px; margin-bottom:6px;">${item.price} <i class="fa-solid fa-coins"></i></div>
+      <button class="btn btn-primary btn-sm btn-block" data-buy="${item.id}" data-kind="${kind}" ${locked||coins<item.price?'disabled':''}>Compra</button>
+    </div>`;
+  }
+  box.innerHTML=`
+    <div class="section-title">Bevande</div>
+    <div class="grid2">${SHOP_DRINKS.map(i=>itemCard(i,"drink")).join("")}</div>
+    <div class="section-title">Cibo</div>
+    <div class="grid2">${SHOP_FOOD.map(i=>itemCard(i,"food")).join("")}</div>`;
+  box.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>buyItem(b.dataset.kind,b.dataset.buy));
+  wireEmojiFallbacks(box);
+}
+async function buyItem(kind,id){
+  const catalog= kind==="food"?SHOP_FOOD:SHOP_DRINKS;
+  const item=catalog.find(i=>i.id===id); if(!item) return;
+  const pet=PROFILE.pet;
+  if(!PROFILE.isAdmin && (pet.level||1)<item.minLevel) return toast("Livello troppo basso","err");
+  if((pet.coins||0)<item.price) return toast("Monete insufficienti","err");
+  pet.coins-=item.price;
+  pet.inventory=pet.inventory||{food:{},drink:{}};
+  pet.inventory[kind][id]=(pet.inventory[kind][id]||0)+1;
+  const ok=await savePet();
+  if(ok){ SND.coin(); toast(esc(item.name)+" acquistato!","ok"); }
+  render();
+}
+function renderSkinMarketTab(){
+  const box=$("#marketBody");
+  box.innerHTML=`
+    <div class="topbar" style="padding:0 0 10px;"><div class="muted">Disegna e condividi skin personalizzate</div>
+      <button class="icon-btn" id="btnCreateSkin"><i class="fa-solid fa-brush"></i></button></div>
+    <div class="section-title">Le mie skin</div>
+    <div id="mySkins"></div>
+    <div class="section-title">Hub della community</div>
+    <div id="hubSkins"><div class="spinner"></div></div>`;
+  $("#btnCreateSkin").onclick=()=>navigate("pixeleditor", {pixGrid:null});
+  const mine = PROFILE.ownedSkins||[];
+  $("#mySkins").innerHTML = mine.length? `<div class="grid2">${mine.map(s=>`
+    <div class="skin-card">
+      <div class="gi">${renderPixelSpanFromGrid(s.grid,60)}</div>
+      <div style="font-weight:800; font-size:13px;">${esc(s.name)}</div>
+      <button class="btn btn-soft btn-sm btn-block" data-equip='${esc(JSON.stringify(s))}' style="margin-top:6px;">Applica</button>
+    </div>`).join("")}</div>` : `<p class="muted">Non hai ancora skin. Creane una con l'editor!</p>`;
+  $("#mySkins").querySelectorAll("[data-equip]").forEach(b=>b.onclick=async ()=>{
+    const s=JSON.parse(b.dataset.equip);
+    PROFILE.pet.equippedSkin={id:s.id,grid:s.grid};
+    const ok=await savePet();
+    if(ok){ SND.success(); toast("Skin applicata!","ok"); navigate("home"); }
+  });
+  const qy=query(collection(db,"skins"), where("published","==",true));
+  const unsub=onSnapshot(qy, snap=>{
+    const skins=[]; snap.forEach(d=>skins.push({id:d.id,...d.data()}));
+    skins.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const box2=$("#hubSkins"); if(!box2) return;
+    const others=skins.filter(s=>s.authorId!==CURRENT_USER.uid);
+    if(!others.length){ box2.innerHTML=`<div class="empty-state"><i class="fa-solid fa-palette"></i><br>Nessuna skin pubblicata dagli altri utenti ancora.</div>`; return; }
+    box2.innerHTML=`<div class="grid2">${others.map(s=>`
+      <div class="skin-card">
+        <div class="gi">${renderPixelSpanFromGrid(s.grid,60)}</div>
+        <div style="font-weight:800; font-size:13px;">${esc(s.name)} ${s.official?'<span class="pill pill-official">Ufficiale</span>':''}</div>
+        <div class="muted" style="font-size:11px;">di ${esc(s.authorName)} · ${s.downloads||0} <i class="fa-solid fa-download"></i></div>
+        <button class="btn btn-primary btn-sm btn-block" data-get="${s.id}" style="margin-top:6px;">Scarica</button>
+      </div>`).join("")}</div>`;
+    box2.querySelectorAll("[data-get]").forEach(b=>b.onclick=async ()=>{
+      const s=others.find(x=>x.id===b.dataset.get);
+      const already=(PROFILE.ownedSkins||[]).some(o=>o.id===s.id);
+      const ok=await safeWrite(async ()=>{
+        if(!already){
+          await updateDoc(doc(db,"users",CURRENT_USER.uid), { ownedSkins: arrayUnion({id:s.id,name:s.name,grid:s.grid,authorName:s.authorName}) });
+          try{ await updateDoc(doc(db,"skins",s.id),{downloads:increment(1)}); }catch(e){ console.error(e); }
+        }
+        PROFILE.pet.equippedSkin={id:s.id,grid:s.grid};
+        await updateDoc(doc(db,"users",CURRENT_USER.uid), { pet: PROFILE.pet });
+      }, "Skin scaricata e applicata!", "Impossibile scaricare la skin");
+      if(ok){
+        if(!already){ PROFILE.ownedSkins=PROFILE.ownedSkins||[]; PROFILE.ownedSkins.push({id:s.id,name:s.name,grid:s.grid,authorName:s.authorName}); }
+        SND.success(); navigate("home");
+      }
+    });
+  }, err=>{
+    console.error(err);
+    const box2=$("#hubSkins"); if(box2) box2.innerHTML=`<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><br>Impossibile caricare le skin.<br>Controlla le regole Firestore.</div>`;
+  });
+  TEMP._marketUnsub=unsub;
+  SUBS.push(unsub);
+}
+
+/* ================= SOCIAL ================= */
+function renderSocial(){
+  const tab = TEMP.socialTab || "friends";
+  const screen=$("#screen");
+  const reqCount=(PROFILE.incomingRequests||[]).length;
+  screen.innerHTML=`
+    <div class="topbar"><div class="title">Social</div></div>
+    <div class="tabbar2">
+      <button data-t="friends" class="${tab==='friends'?'active':''}">Amici</button>
+      <button data-t="search" class="${tab==='search'?'active':''}">Cerca</button>
+      <button data-t="requests" class="${tab==='requests'?'active':''}">Richieste${reqCount?` (${reqCount})`:''}</button>
+    </div>
+    <div id="socialBody"></div>`;
+  screen.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{TEMP.socialTab=b.dataset.t; render();});
+  if(tab==="friends") renderFriendsTab();
+  else if(tab==="search") renderSearchTab();
+  else renderRequestsTab();
+}
+function renderFriendsTab(){
+  const box=$("#socialBody");
+  const friends=PROFILE.friends||[];
+  if(!friends.length){ box.innerHTML=`<div class="empty-state"><i class="fa-solid fa-user-group"></i><br>Non hai ancora amici.<br>Cercali nella scheda "Cerca"!</div>`; return; }
+  box.innerHTML=`<div class="spinner"></div>`;
+  Promise.all(friends.map(uid=>getDoc(doc(db,"users",uid)))).then(docs=>{
+    const items=docs.filter(d=>d.exists()).map(d=>({id:d.id,...d.data()}));
+    const myLvl=PROFILE.pet.level||1;
+    const b2=$("#socialBody"); if(!b2) return;
+    b2.innerHTML = items.map(u=>{
+      const friendLvl=u.pet?.level||1;
+      const canGift = friendLvl>=myLvl;
+      return `<div class="list-item">
+        <div class="av">${u.avatar||'🐣'}</div>
+        <div class="meta"><div class="n">${esc(u.username)}</div><div class="s">${esc(u.pet?.name||'')} · Lv.${friendLvl}</div></div>
+        <button class="icon-btn" data-dm="${u.id}" title="Messaggi"><i class="fa-solid fa-comment"></i></button>
+        <button class="icon-btn" data-visit="${u.id}" title="Visita"><i class="fa-solid fa-door-open"></i></button>
+        <button class="icon-btn" data-gift="${u.id}" title="Regala" ${canGift?'':'disabled'} style="${canGift?'':'opacity:.35;'}"><i class="fa-solid fa-gift"></i></button>
+      </div>`;
+    }).join("");
+    b2.querySelectorAll("[data-dm]").forEach(b=>{ const f=items.find(x=>x.id===b.dataset.dm); b.onclick=()=>navigate("dm", {dmFriendId:f.id, dmFriendName:f.username, dmFriendAvatar:f.avatar}); });
+    b2.querySelectorAll("[data-visit]").forEach(b=>b.onclick=()=>navigate("visit", {visitId:b.dataset.visit}));
+    b2.querySelectorAll("[data-gift]").forEach(b=>{ if(!b.disabled) b.onclick=()=>openGiftSheet(b.dataset.gift, items.find(x=>x.id===b.dataset.gift)); });
+  }).catch(e=>{
+    console.error(e);
+    const b2=$("#socialBody"); if(b2) b2.innerHTML=`<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><br>Impossibile caricare gli amici.</div>`;
+  });
+}
+function openGiftSheet(friendId, friendData){
+  const inv=PROFILE.pet.inventory||{food:{},drink:{}};
+  const owned=[];
+  Object.entries(inv.food||{}).forEach(([id,n])=>{ if(n>0){ const it=SHOP_FOOD.find(x=>x.id===id); if(it) owned.push({...it,kind:"food",count:n}); }});
+  Object.entries(inv.drink||{}).forEach(([id,n])=>{ if(n>0){ const it=SHOP_DRINKS.find(x=>x.id===id); if(it) owned.push({...it,kind:"drink",count:n}); }});
+  if(!owned.length){
+    openSheet(`<h3 class="center">Nessun oggetto da regalare</h3><p class="muted center">Compra cibo o bevande nel Negozio per poterli regalare.</p>`);
+    return;
+  }
+  openSheet(`<h3 class="center" style="margin-bottom:12px;">Regala a ${esc(friendData.username)}</h3>` +
+    owned.map(it=>`
+      <div class="inv-row">
+        ${emojiBadge(it.emoji,30,true)}
+        <div style="flex:1;"><b>${esc(it.name)}</b><div class="muted" style="font-size:12px;">Possiedi: ${it.count}</div></div>
+        <button class="btn btn-accent btn-sm" data-gift-item="${it.id}" data-kind="${it.kind}">Invia</button>
+      </div>`).join(""));
+  document.querySelectorAll("[data-gift-item]").forEach(b=>b.onclick=()=>sendGift(friendId,b.dataset.kind,b.dataset.giftItem));
+}
+async function sendGift(friendId,kind,itemId){
+  const myPet=PROFILE.pet;
+  const cur=myPet.inventory?.[kind]?.[itemId]||0;
+  if(cur<=0) return;
+  try{
+    const friendSnap=await getDoc(doc(db,"users",friendId));
+    if(!friendSnap.exists()) return toast("Utente non trovato","err");
+    const fData=friendSnap.data(); const fPet=fData.pet||newPet();
+    fPet.inventory=fPet.inventory||{food:{},drink:{}}; fPet.inventory[kind]=fPet.inventory[kind]||{};
+    fPet.inventory[kind][itemId]=(fPet.inventory[kind][itemId]||0)+1;
+    /* Aggiorna prima l'amico: solo se questo va a buon fine, tolgo l'oggetto a me */
+    await updateDoc(doc(db,"users",friendId),{pet:fPet});
+    myPet.inventory[kind][itemId]=cur-1;
+    await savePet();
+    SND.success(); toast("Regalo inviato! 🎁","ok"); closeSheet(); render();
+  }catch(e){
+    console.error(e);
+    toast("Impossibile inviare il regalo — controlla le regole Firestore","err");
+  }
+}
+function renderSearchTab(){
+  const box=$("#socialBody");
+  box.innerHTML=`
+    <div class="field"><input id="searchInput" placeholder="Cerca per nome utente…"></div>
+    <div id="searchResults"></div>`;
+  let t=null;
+  $("#searchInput").oninput=(e)=>{
+    clearTimeout(t);
+    t=setTimeout(()=>doSearch(e.target.value),350);
+  };
+}
+async function doSearch(term){
+  const box=$("#searchResults");
+  const tl=usernameLower(term);
+  if(tl.length<2){ box.innerHTML=`<p class="muted center">Scrivi almeno 2 lettere…</p>`; return; }
+  box.innerHTML=`<div class="spinner"></div>`;
+  try{
+    const qy=query(collection(db,"users"), orderBy("usernameLower"), startAt(tl), endAt(tl+"\uf8ff"), limit(20));
+    const snap=await getDocs(qy);
+    const results=[];
+    snap.forEach(d=>{ if(d.id!==CURRENT_USER.uid) results.push({id:d.id,...d.data()}); });
+    const visible=results.filter(u=>u.privacy?.online!==false);
+    if(!visible.length){ box.innerHTML=`<p class="muted center">Nessun utente trovato.</p>`; return; }
+    box.innerHTML = visible.map(u=>{
+      const isFriend=(PROFILE.friends||[]).includes(u.id);
+      const sent=(PROFILE.outgoingRequests||[]).includes(u.id);
+      return `<div class="list-item">
+        <div class="av">${u.avatar||'🐣'}</div>
+        <div class="meta"><div class="n">${esc(u.username)} ${u.isAdmin?'<span class="pill pill-admin">ADMIN</span>':''}</div><div class="s">${isFriend?'Già amici':''}</div></div>
+        ${isFriend? `<span class="pill pill-approved">Amico</span>` :
+          sent ? `<span class="pill pill-pending">Inviata</span>` :
+          u.privacy?.friendRequests===false ? `<span class="muted" style="font-size:11px;">Non riceve richieste</span>` :
+          `<button class="btn btn-soft btn-sm" data-req="${u.id}">Aggiungi</button>`}
+      </div>`;
+    }).join("");
+    box.querySelectorAll("[data-req]").forEach(b=>b.onclick=()=>sendFriendRequest(b.dataset.req));
+  }catch(e){
+    console.error(e);
+    box.innerHTML=`<p class="muted center">Errore nella ricerca. Controlla le regole Firestore.</p>`;
+  }
+}
+async function sendFriendRequest(targetId){
+  try{
+    const targetSnap=await getDoc(doc(db,"users",targetId));
+    if(!targetSnap.exists()) return;
+    if(targetSnap.data().privacy?.friendRequests===false) return toast("Questo utente non riceve richieste","err");
+    await updateDoc(doc(db,"users",targetId),{ incomingRequests: arrayUnion(CURRENT_USER.uid) });
+    await saveProfile({ outgoingRequests: arrayUnion(targetId) });
+    SND.notify(); toast("Richiesta inviata!","ok");
+    render();
+  }catch(e){ console.error(e); toast("Errore invio richiesta","err"); }
+}
+function renderRequestsTab(){
+  const box=$("#socialBody");
+  const reqs=PROFILE.incomingRequests||[];
+  if(!reqs.length){ box.innerHTML=`<div class="empty-state"><i class="fa-solid fa-inbox"></i><br>Nessuna richiesta in sospeso.</div>`; return; }
+  box.innerHTML=`<div class="spinner"></div>`;
+  Promise.all(reqs.map(uid=>getDoc(doc(db,"users",uid)))).then(docs=>{
+    const items=docs.filter(d=>d.exists()).map(d=>({id:d.id,...d.data()}));
+    const b2=$("#socialBody"); if(!b2) return;
+    b2.innerHTML = items.map(u=>`
+      <div class="list-item">
+        <div class="av">${u.avatar||'🐣'}</div>
+        <div class="meta"><div class="n">${esc(u.username)}</div></div>
+        <button class="icon-btn" style="color:var(--mint);" data-acc="${u.id}"><i class="fa-solid fa-check"></i></button>
+        <button class="icon-btn" style="color:var(--danger);" data-dec="${u.id}"><i class="fa-solid fa-xmark"></i></button>
+      </div>`).join("");
+    b2.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>acceptRequest(b.dataset.acc));
+    b2.querySelectorAll("[data-dec]").forEach(b=>b.onclick=()=>declineRequest(b.dataset.dec));
+  });
+}
+async function acceptRequest(fromId){
+  const ok=await safeWrite(async ()=>{
+    await saveProfile({ incomingRequests: arrayRemove(fromId), friends: arrayUnion(fromId) });
+    await updateDoc(doc(db,"users",fromId),{ friends: arrayUnion(CURRENT_USER.uid), outgoingRequests: arrayRemove(CURRENT_USER.uid) });
+  }, "Nuovo amico aggiunto! 🎉", "Impossibile accettare la richiesta");
+  if(ok) SND.success();
+  render();
+}
+async function declineRequest(fromId){
+  await saveProfile({ incomingRequests: arrayRemove(fromId) });
+  toast("Richiesta rifiutata","ok"); render();
+}
+function dmConvId(a,b){ return [a,b].sort().join("_"); }
+function renderDM(){
+  const screenEl=$("#screen");
+  const friendId=TEMP.dmFriendId;
+  if(!friendId){ navigate("social"); return; }
+  screenEl.innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button>
+      <div class="title" style="flex:1;">${esc(TEMP.dmFriendAvatar||'🐣')} ${esc(TEMP.dmFriendName||'Chat')}</div></div>
+    <div id="dmMessages" style="display:flex; flex-direction:column; gap:8px; padding-bottom:14px; min-height:160px;"><div class="spinner"></div></div>
+    <div style="position:sticky; bottom:0; background:var(--bg); padding-top:8px;">
+      <div class="row" style="flex-wrap:nowrap;">
+        <input id="dmInput" placeholder="Scrivi un messaggio…" maxlength="500">
+        <button class="btn btn-primary" id="dmSend" style="flex:0 0 auto; padding:12px 16px;"><i class="fa-solid fa-paper-plane"></i></button>
+      </div>
+    </div>`;
+  $("#back").onclick=()=>navigate("social");
+  const cid=dmConvId(CURRENT_USER.uid, friendId);
+  const qy=query(collection(db,"dms",cid,"messages"), orderBy("ts","asc"), limit(200));
+  const unsub=onSnapshot(qy, snap=>{
+    const msgs=[]; snap.forEach(d=>msgs.push(d.data()));
+    const box=$("#dmMessages"); if(!box) return;
+    if(!msgs.length){ box.innerHTML=`<p class="muted center">Nessun messaggio ancora. Scrivi il primo!</p>`; }
+    else {
+      box.innerHTML = msgs.map(m=>{
+        const mine=m.from===CURRENT_USER.uid;
+        return `<div style="align-self:${mine?'flex-end':'flex-start'}; max-width:78%; background:${mine?'var(--primary)':'var(--surface-soft)'}; color:${mine?'#fff':'var(--ink)'}; padding:10px 14px; border-radius:16px; ${mine?'border-bottom-right-radius:4px;':'border-bottom-left-radius:4px;'} font-size:14px; word-break:break-word;">${esc(m.text)}</div>`;
+      }).join("");
+    }
+    screenEl.scrollTop = screenEl.scrollHeight;
+  }, err=>{
+    console.error(err);
+    const box=$("#dmMessages"); if(box) box.innerHTML=`<p class="muted center">Impossibile caricare i messaggi (controlla le regole Firestore).</p>`;
+  });
+  SUBS.push(unsub);
+  function send(){
+    const val=$("#dmInput").value.trim();
+    if(!val) return;
+    $("#dmInput").value="";
+    safeWrite(async ()=>{
+      await addDoc(collection(db,"dms",cid,"messages"),{from:CURRENT_USER.uid, text:val.slice(0,500), ts:Date.now()});
+    }, null, "Impossibile inviare il messaggio");
+  }
+  $("#dmSend").onclick=send;
+  $("#dmInput").onkeydown=(e)=>{ if(e.key==="Enter") send(); };
+  $("#dmInput").focus();
+}
+async function renderVisit(){
+  const screen=$("#screen");
+  screen.innerHTML=`<div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">Stanza amico</div><div style="width:40px;"></div></div><div class="spinner"></div>`;
+  $("#back").onclick=()=>navigate("social");
+  if(!TEMP.visitId){ toast("Amico non trovato","err"); navigate("social"); return; }
+  let snap;
+  try{ snap=await getDoc(doc(db,"users",TEMP.visitId)); }
+  catch(e){ console.error(e); toast("Errore nel caricamento della stanza","err"); navigate("social"); return; }
+  if(VIEW!=="visit") return;
+  if(!snap.exists()){ $("#screen").innerHTML+=`<p class="muted center">Questo utente non esiste più.</p>`; return; }
+  const friend={id:snap.id, ...snap.data()};
+  applyDecay(friend.pet);
+  const myEmo=petEmojiFor(PROFILE), frEmo=petEmojiFor(friend);
+  const statDefs=[
+    {k:"hunger", label:"Fame", icon:"fa-drumstick-bite", color:"var(--sun)"},
+    {k:"thirst", label:"Sete", icon:"fa-glass-water", color:"#3B82F6"},
+    {k:"happiness", label:"Felicità", icon:"fa-heart", color:"var(--accent)"},
+    {k:"energy", label:"Energia", icon:"fa-bolt", color:"var(--primary)"},
+    {k:"hygiene", label:"Igiene", icon:"fa-soap", color:"var(--mint)"},
+  ];
+  $("#screen").innerHTML=`
+    <div class="topbar"><button class="icon-btn" id="back"><i class="fa-solid fa-arrow-left"></i></button><div class="title">Stanza di ${esc(friend.username)}</div><div style="width:40px;"></div></div>
+    <div class="pet-stage" id="petStage">
+      <div style="display:flex; justify-content:center; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+        <div class="center"><div class="pet-emoji" style="font-size:min(56px,16vw);">${myEmo?myEmo:renderPixelSpanFromGrid(PROFILE.pet.equippedSkin?.grid,46)}</div><div class="muted" style="font-size:12px;">${esc(PROFILE.pet.name)} (tu)</div></div>
+        <div style="font-size:22px;">🤝</div>
+        <div class="center"><div class="pet-emoji" style="font-size:min(56px,16vw);">${frEmo?frEmo:renderPixelSpanFromGrid(friend.pet.equippedSkin?.grid,46)}</div><div class="muted" style="font-size:12px;">${esc(friend.pet.name)}</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-title" style="margin-top:0;">Statistiche di ${esc(friend.pet.name)}</div>
+      <div class="stats">
+        ${statDefs.map(s=>`
+          <div class="stat-row">
+            <i class="fa-solid ${s.icon}" style="color:${s.color}"></i>
+            <div class="bar"><div class="bar-fill" style="width:${Math.round(friend.pet[s.k]??0)}%; background:${s.color};"></div></div>
+            <div style="width:34px; text-align:right; font-weight:800; font-size:12px; flex-shrink:0;">${Math.round(friend.pet[s.k]??0)}</div>
+          </div>`).join("")}
+      </div>
+      <div class="muted" style="margin-top:8px; font-size:12px;">Livello ${friend.pet.level||1} · ${friend.pet.ageMinutes?Math.floor(friend.pet.ageMinutes):0} min di vita</div>
+    </div>
+    <div class="row" style="margin-bottom:12px;">
+      <button class="btn btn-accent btn-block" id="playTogether"><i class="fa-solid fa-heart"></i> Gioca insieme</button>
+      <button class="btn btn-soft btn-block" id="showSkins"><i class="fa-solid fa-shirt"></i> Vedi skin</button>
+    </div>
+    <div class="section-title">Amici di ${esc(friend.username)}</div>
+    <div id="friendFriends"><div class="spinner"></div></div>
+    <div id="skinPreview"></div>`;
+  $("#back").onclick=()=>navigate("social");
+  $("#playTogether").onclick=async ()=>{
+    PROFILE.pet.happiness=clamp(PROFILE.pet.happiness+10,0,100);
+    friend.pet.happiness=clamp(friend.pet.happiness+10,0,100);
+    const ok1=await savePet();
+    const ok2=await safeWrite(async ()=>{ await updateDoc(doc(db,"users",friend.id),{pet:friend.pet}); }, null, "Non riesco ad aggiornare il pet dell'amico");
+    if(ok1&&ok2){ SND.play(); floatEmote(null,"💕"); toast("I pet si sono divertiti insieme!","ok"); }
+    navigate("visit", {visitId:friend.id});
+  };
+  $("#showSkins").onclick=()=>{
+    const skins=friend.ownedSkins||[];
+    $("#skinPreview").innerHTML = skins.length? `<div class="section-title">Skin di ${esc(friend.username)}</div><div class="grid2">${skins.map(s=>`
+      <div class="skin-card"><div class="gi">${renderPixelSpanFromGrid(s.grid,50)}</div><div style="font-weight:800; font-size:12px;">${esc(s.name)}</div></div>`).join("")}</div>`
+      : `<p class="muted center">Non ha ancora skin personalizzate.</p>`;
+  };
+  const ffriends=(friend.friends||[]).slice(0,20);
+  if(!ffriends.length){ $("#friendFriends").innerHTML=`<p class="muted">Nessun amico.</p>`; }
+  else {
+    try{
+      const docs=await Promise.all(ffriends.map(fid=>getDoc(doc(db,"users",fid))));
+      const items=docs.filter(d=>d.exists()).map(d=>({id:d.id,...d.data()}));
+      const ffbox=$("#friendFriends"); if(!ffbox) return;
+      ffbox.innerHTML = items.length? items.map(f=>`
+        <div class="list-item">
+          <div class="av">${f.avatar||'🐣'}</div>
+          <div class="meta"><div class="n">${esc(f.username)}</div><div class="s">Lv.${f.pet?.level||1}</div></div>
+        </div>`).join("") : `<p class="muted">Nessun amico visibile.</p>`;
+    }catch(e){ console.error(e); const ffbox=$("#friendFriends"); if(ffbox) ffbox.innerHTML=`<p class="muted">Impossibile caricare gli amici.</p>`; }
+  }
+}
+
+/* ================= SETTINGS ================= */
+function renderSettings(){
+  const p=PROFILE;
+  const screen=$("#screen");
+  screen.innerHTML=`
+    <div class="topbar"><div class="title">Il tuo profilo</div></div>
+    <div class="card center">
+      <div id="avatarTapZone" style="font-size:50px; cursor:pointer;">${p.avatar}</div>
+      <h3>${esc(p.username)} ${p.isAdmin?'<span class="pill pill-admin">ADMIN</span>':''}</h3>
+      <div class="muted">Livello ${p.pet.level||1} · ${Math.round(p.pet.exp||0)}/${expForLevel(p.pet.level||1)} EXP</div>
+    </div>
+    <div class="section-title">Modifica profilo</div>
+    <div class="card">
+      <div class="field"><label>Nome pet</label><input id="s_petname" value="${esc(p.pet.name)}"></div>
+      <div class="field"><label>Avatar</label>
+        <div class="avatar-grid" id="avGrid2">${AVATARS.map(a=>`<div class="avatar-opt ${a===p.avatar?'selected':''}" data-av="${a}">${a}</div>`).join("")}</div>
+      </div>
+      <button class="btn btn-primary btn-block" id="saveProfileBtn">Salva modifiche</button>
+    </div>
+    <div class="section-title">Privacy</div>
+    <div class="card">
+      <div class="stat-row" style="margin-bottom:12px;">
+        <div style="flex:1;"><b>Profilo visibile online</b><div class="muted" style="font-size:12px;">Appari nelle ricerche degli altri utenti</div></div>
+        <label class="switch"><input type="checkbox" id="priv_online" ${p.privacy?.online!==false?'checked':''}><span class="slider"></span></label>
+      </div>
+      <div class="stat-row">
+        <div style="flex:1;"><b>Accetta richieste di amicizia</b><div class="muted" style="font-size:12px;">Altri utenti possono inviarti richieste</div></div>
+        <label class="switch"><input type="checkbox" id="priv_req" ${p.privacy?.friendRequests!==false?'checked':''}><span class="slider"></span></label>
+      </div>
+    </div>
+    <div class="section-title">Sicurezza</div>
+    <div class="card">
+      <button class="btn btn-soft btn-block" id="btnChangePass" style="margin-bottom:10px;"><i class="fa-solid fa-key"></i> Cambia password</button>
+      <button class="btn btn-danger btn-block" id="btnDelete"><i class="fa-solid fa-triangle-exclamation"></i> Elimina account</button>
+    </div>
+    <button class="btn btn-soft btn-block" id="btnLogout"><i class="fa-solid fa-right-from-bracket"></i> Esci</button>`;
+  let selAv=p.avatar;
+  screen.querySelectorAll("[data-av]").forEach(d=>d.onclick=()=>{selAv=d.dataset.av; screen.querySelectorAll("#avGrid2 .avatar-opt").forEach(x=>x.classList.toggle("selected",x.dataset.av===selAv));});
+  let tapCount=0, tapTimer=null;
+  $("#avatarTapZone").onclick=()=>{
+    tapCount++; clearTimeout(tapTimer); tapTimer=setTimeout(()=>tapCount=0,2500);
+    if(tapCount>=6){ tapCount=0; openAdminUnlockSheet(); }
+  };
+  $("#saveProfileBtn").onclick=async ()=>{
+    const newName=$("#s_petname").value.trim()||p.pet.name;
+    PROFILE.avatar=selAv; PROFILE.pet.name=newName;
+    const ok=await safeWrite(async ()=>{ await updateDoc(doc(db,"users",CURRENT_USER.uid), {avatar:selAv, pet:PROFILE.pet}); }, "Profilo salvato", "Impossibile salvare il profilo");
+    rememberProfile(PROFILE.username, PROFILE.avatar);
+    if(ok) SND.success();
+    render();
+  };
+  $("#priv_online").onchange=async (e)=>{ PROFILE.privacy=PROFILE.privacy||{}; PROFILE.privacy.online=e.target.checked; await saveProfile({privacy:PROFILE.privacy}); toast("Preferenza salvata","ok"); };
+  $("#priv_req").onchange=async (e)=>{ PROFILE.privacy=PROFILE.privacy||{}; PROFILE.privacy.friendRequests=e.target.checked; await saveProfile({privacy:PROFILE.privacy}); toast("Preferenza salvata","ok"); };
+  $("#btnChangePass").onclick=openChangePasswordSheet;
+  $("#btnDelete").onclick=openDeleteAccountSheet;
+  $("#btnLogout").onclick=async ()=>{ clearSubs(); await signOut(auth); };
+}
+function openAdminUnlockSheet(){
+  openSheet(`
+    <h3 class="center" style="margin-bottom:10px;"><i class="fa-solid fa-lock"></i> Accesso riservato</h3>
+    <div class="field"><label>Chiave di accesso</label><input id="adm_pin" placeholder="Inserisci la chiave"></div>
+    <button class="btn btn-primary btn-block" id="adm_submit">Sblocca</button>`);
+  $("#adm_submit").onclick=async ()=>{
+    const pin=$("#adm_pin").value.trim();
+    if(ADMIN_KEYS.includes(pin)){
+      const ok=await saveProfile({isAdmin:true});
+      if(ok){ SND.success(); toast("Accesso amministratore sbloccato 👑","ok"); closeSheet(); render(); }
+    } else { SND.error(); toast("Chiave non valida","err"); }
+  };
+}
+function openChangePasswordSheet(){
+  openSheet(`
+    <h3 class="center" style="margin-bottom:14px;">Cambia password</h3>
+    <div class="field"><label>Password attuale</label><input id="cp_old" type="password"></div>
+    <div class="field"><label>Nuova password</label><input id="cp_new" type="password"></div>
+    <div class="field"><label>Conferma nuova password</label><input id="cp_new2" type="password"></div>
+    <button class="btn btn-primary btn-block" id="cp_submit">Conferma</button>`);
+  $("#cp_submit").onclick=async ()=>{
+    const oldP=$("#cp_old").value, np=$("#cp_new").value, np2=$("#cp_new2").value;
+    if(np.length<6) return toast("La nuova password deve avere almeno 6 caratteri","err");
+    if(isWeakPassword(np)) return toast("Password troppo banale, scegline una più sicura","err");
+    if(np!==np2) return toast("Le nuove password non coincidono","err");
+    try{
+      const cred=EmailAuthProvider.credential(auth.currentUser.email, oldP);
+      await reauthenticateWithCredential(auth.currentUser, cred);
+      await updatePassword(auth.currentUser, np);
+      SND.success(); toast("Password aggiornata!","ok"); closeSheet();
+    }catch(e){ SND.error(); toast("Password attuale errata","err"); }
+  };
+}
+function openDeleteAccountSheet(){
+  openSheet(`
+    <h3 class="center" style="margin-bottom:14px; color:var(--danger);">Elimina account</h3>
+    <p class="muted center">Questa azione è irreversibile. Il tuo Otamagochi e tutti i tuoi dati verranno cancellati per sempre.</p>
+    <div class="field"><label>Conferma la password attuale</label><input id="del_pass" type="password"></div>
+    <button class="btn btn-danger btn-block" id="del_submit">Elimina definitivamente</button>`);
+  $("#del_submit").onclick=async ()=>{
+    const pass=$("#del_pass").value;
+    try{
+      const cred=EmailAuthProvider.credential(auth.currentUser.email, pass);
+      await reauthenticateWithCredential(auth.currentUser, cred);
+      await deleteDoc(doc(db,"users",CURRENT_USER.uid));
+      await deleteUser(auth.currentUser);
+      closeSheet(); toast("Account eliminato","ok");
+    }catch(e){ SND.error(); toast("Password errata","err"); }
+  };
+}
+
+/* ================= ADMIN ================= */
+function renderAdmin(){
+  const tab=TEMP.adminTab||"users";
+  const screen=$("#screen");
+  screen.innerHTML=`
+    <div class="topbar"><div class="title"><i class="fa-solid fa-shield-halved"></i> Admin</div></div>
+    <div class="tabbar2">
+      <button data-at="users" class="${tab==='users'?'active':''}">Utenti</button>
+      <button data-at="content" class="${tab==='content'?'active':''}">Contenuti</button>
+      <button data-at="stats" class="${tab==='stats'?'active':''}">Statistiche</button>
+    </div>
+    <div id="adminBody"><div class="spinner"></div></div>`;
+  screen.querySelectorAll("[data-at]").forEach(b=>b.onclick=()=>{TEMP.adminTab=b.dataset.at; render();});
+  if(tab==="content") renderAdminContent();
+  else if(tab==="stats") renderAdminStats();
+  else renderAdminUsers();
+}
+function renderAdminUsers(){
+  getDocs(collection(db,"users")).then(snap=>{
+    const users=[]; snap.forEach(d=>users.push({id:d.id,...d.data()}));
+    users.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const box=$("#adminBody"); if(!box) return;
+    box.innerHTML = users.map(u=>`
+      <div class="list-item">
+        <div class="av">${u.avatar||'🐣'}</div>
+        <div class="meta"><div class="n">${esc(u.username)} ${u.isAdmin?'<span class="pill pill-admin">ADMIN</span>':''} ${u.banned?'<span class="pill pill-rejected">Bannato</span>':''}</div>
+          <div class="s">Livello ${u.pet?.level||1} · ${Math.round(u.pet?.coins||0)} monete</div></div>
+        ${u.id!==CURRENT_USER.uid ? `<button class="icon-btn" data-manage="${u.id}"><i class="fa-solid fa-sliders"></i></button>`:``}
+      </div>`).join("");
+    box.querySelectorAll("[data-manage]").forEach(b=>b.onclick=()=>openAdminUserSheet(users.find(x=>x.id===b.dataset.manage)));
+  }).catch(e=>{
+    console.error(e);
+    const box=$("#adminBody"); if(box) box.innerHTML=`<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i><br>Impossibile caricare gli utenti.</div>`;
+  });
+}
+function openAdminUserSheet(u){
+  openSheet(`
+    <h3 class="center">${esc(u.username)}</h3>
+    <div class="muted center" style="margin-bottom:14px;">Livello ${u.pet?.level||1} · ${(u.friends||[]).length} amici</div>
+    <div class="row" style="margin-bottom:10px;">
+      <button class="btn ${u.isAdmin?'btn-danger':'btn-soft'} btn-sm" id="am_toggleAdmin">${u.isAdmin?'Rimuovi Admin':'Rendi Admin'}</button>
+      <button class="btn ${u.banned?'btn-mint':'btn-danger'} btn-sm" id="am_toggleBan">${u.banned?'Riabilita':'Banna'}</button>
+    </div>
+    <button class="btn btn-soft btn-block" id="am_logout" style="margin-bottom:14px;"><i class="fa-solid fa-right-from-bracket"></i> Sloggalo ora</button>
+    <div class="section-title">Amici</div>
+    <div id="am_friends"><div class="spinner"></div></div>
+    <div class="divider"></div>
+    <button class="btn btn-danger btn-block" id="am_delete"><i class="fa-solid fa-user-slash"></i> Elimina account</button>
+  `);
+  $("#am_toggleAdmin").onclick=async ()=>{ await adminSetRole(u.id,!u.isAdmin); closeSheet(); renderAdminUsers(); };
+  $("#am_toggleBan").onclick=async ()=>{
+    const ok=await safeWrite(async ()=>{ await updateDoc(doc(db,"users",u.id),{banned:!u.banned}); }, u.banned?"Utente riabilitato":"Utente bannato", "Impossibile aggiornare lo stato");
+    if(ok){ SND.success(); closeSheet(); renderAdminUsers(); }
+  };
+  $("#am_logout").onclick=async ()=>{
+    const ok=await safeWrite(async ()=>{ await updateDoc(doc(db,"users",u.id),{forceLogout:true}); }, "Richiesta di logout inviata", "Impossibile forzare il logout");
+    if(ok) SND.success();
+  };
+  $("#am_delete").onclick=()=>adminDeleteAccountUI(u);
+  const friends=u.friends||[];
+  if(!friends.length){ $("#am_friends").innerHTML=`<p class="muted">Nessun amico.</p>`; }
+  else {
+    Promise.all(friends.map(fid=>getDoc(doc(db,"users",fid)))).then(docs=>{
+      const items=docs.filter(d=>d.exists()).map(d=>({id:d.id,...d.data()}));
+      const box=$("#am_friends"); if(!box) return;
+      box.innerHTML = items.map(f=>`
+        <div class="list-item">
+          <div class="av">${f.avatar||'🐣'}</div>
+          <div class="meta"><div class="n">${esc(f.username)}</div></div>
+          <button class="btn btn-danger btn-sm" data-unfriend="${f.id}">Rimuovi</button>
+        </div>`).join("");
+      box.querySelectorAll("[data-unfriend]").forEach(b=>b.onclick=async ()=>{
+        await adminRemoveFriendship(u.id,b.dataset.unfriend);
+        u.friends=(u.friends||[]).filter(x=>x!==b.dataset.unfriend);
+        openAdminUserSheet(u);
+      });
+    });
+  }
+}
+async function adminSetRole(uid, makeAdmin){
+  const ok=await safeWrite(async ()=>{ await updateDoc(doc(db,"users",uid),{isAdmin:makeAdmin}); }, makeAdmin?"Utente promosso Admin":"Privilegi Admin rimossi", "Impossibile modificare il ruolo");
+  if(ok) SND.success();
+}
+async function adminRemoveFriendship(uidA,uidB){
+  const ok=await safeWrite(async ()=>{
+    await updateDoc(doc(db,"users",uidA),{friends:arrayRemove(uidB)});
+    await updateDoc(doc(db,"users",uidB),{friends:arrayRemove(uidA)});
+  }, "Amicizia rimossa", "Impossibile rimuovere l'amicizia");
+  if(ok) SND.success();
+}
+function adminDeleteAccountUI(u){
+  openConfirmSheet("Elimina account", `Eliminerai definitivamente il profilo e i dati di "${u.username}". Non potrà più accedere con questo account.`, async ()=>{
+    const ok=await safeWrite(async ()=>{ await deleteDoc(doc(db,"users",u.id)); }, "Account eliminato", "Impossibile eliminare l'account");
+    if(ok){ SND.success(); renderAdminUsers(); }
+  });
+}
+function renderAdminContent(){
+  const box=$("#adminBody");
+  box.innerHTML=`
+    <div class="card">
+      <p class="muted">I minigiochi e le skin che crei da Admin vengono automaticamente pubblicati come contenuti <b>ufficiali</b> 👑. Non devi approvare i contenuti degli utenti: sono pubblicati liberamente, ma puoi modificarli o eliminarli da qui.</p>
+      <button class="btn btn-primary btn-block" id="goArcadeCreate" style="margin-bottom:10px;"><i class="fa-solid fa-gamepad"></i> Crea minigioco ufficiale</button>
+      <button class="btn btn-soft btn-block" id="goSkinCreate"><i class="fa-solid fa-brush"></i> Crea skin ufficiale</button>
+    </div>
+    <div class="section-title">Tutti i minigiochi</div>
+    <div id="adGames"><div class="spinner"></div></div>
+    <div class="section-title">Tutte le skin</div>
+    <div id="adSkins"><div class="spinner"></div></div>`;
+  $("#goArcadeCreate").onclick=()=>openSandboxBuilder();
+  $("#goSkinCreate").onclick=()=>navigate("pixeleditor", {pixGrid:null});
+  getDocs(collection(db,"minigames")).then(snap=>{
+    const games=[]; snap.forEach(d=>games.push({id:d.id,...d.data()}));
+    games.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const box2=$("#adGames"); if(!box2) return;
+    box2.innerHTML = games.length? games.map(g=>`
+      <div class="list-item">
+        <div class="av">${GAME_ICONS[g.type]||'🎮'}</div>
+        <div class="meta"><div class="n">${esc(g.title)} ${g.official?'<span class="pill pill-official">Ufficiale</span>':''}</div><div class="s">di ${esc(g.authorName)}</div></div>
+        <button class="icon-btn" data-editg="${g.id}"><i class="fa-solid fa-pen"></i></button>
+        <button class="icon-btn" style="color:var(--danger);" data-delg="${g.id}"><i class="fa-solid fa-trash"></i></button>
+      </div>`).join("") : `<p class="muted">Nessun minigioco.</p>`;
+    box2.querySelectorAll("[data-editg]").forEach(b=>b.onclick=()=>{
+      const g=games.find(x=>x.id===b.dataset.editg);
+      if(g) openSandboxBuilder({editGame:g});
+    });
+    box2.querySelectorAll("[data-delg]").forEach(b=>b.onclick=()=>{
+      const g=games.find(x=>x.id===b.dataset.delg);
+      if(g) adminDeleteGame(g.id,g.title);
+    });
+  }).catch(e=>console.error(e));
+  getDocs(collection(db,"skins")).then(snap=>{
+    const skins=[]; snap.forEach(d=>skins.push({id:d.id,...d.data()}));
+    skins.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+    const box3=$("#adSkins"); if(!box3) return;
+    box3.innerHTML = skins.length? `<div class="grid2">${skins.map(s=>`
+      <div class="skin-card">
+        <div class="gi">${renderPixelSpanFromGrid(s.grid,50)}</div>
+        <div style="font-weight:800; font-size:12px;">${esc(s.name)} ${s.official?'<span class="pill pill-official">Ufficiale</span>':''}</div>
+        <div class="muted" style="font-size:10px;">di ${esc(s.authorName)}</div>
+        <div class="row" style="margin-top:6px;">
+          <button class="btn btn-soft btn-sm" data-edits="${s.id}">Modifica</button>
+          <button class="btn btn-danger btn-sm" data-dels="${s.id}">Elim.</button>
+        </div>
+      </div>`).join("")}</div>` : `<p class="muted">Nessuna skin.</p>`;
+    box3.querySelectorAll("[data-edits]").forEach(b=>b.onclick=()=>{
+      const s=skins.find(x=>x.id===b.dataset.edits);
+      if(s) navigate("pixeleditor", {pixGrid:[...s.grid], editingSkinId:s.id, editingSkinName:s.name});
+    });
+    box3.querySelectorAll("[data-dels]").forEach(b=>b.onclick=()=>{
+      const s=skins.find(x=>x.id===b.dataset.dels);
+      if(s) adminDeleteSkin(s.id,s.name);
+    });
+  }).catch(e=>console.error(e));
+}
+function adminDeleteGame(id,title){
+  openConfirmSheet("Elimina minigioco", `Vuoi eliminare definitivamente "${title}"?`, async ()=>{
+    const ok=await safeWrite(async ()=>{ await deleteDoc(doc(db,"minigames",id)); }, "Minigioco eliminato", "Impossibile eliminare il minigioco");
+    if(ok){ SND.success(); renderAdminContent(); }
+  });
+}
+function adminDeleteSkin(id,name){
+  openConfirmSheet("Elimina skin", `Vuoi eliminare definitivamente "${name}"?`, async ()=>{
+    const ok=await safeWrite(async ()=>{ await deleteDoc(doc(db,"skins",id)); }, "Skin eliminata", "Impossibile eliminare la skin");
+    if(ok){ SND.success(); renderAdminContent(); }
+  });
+}
+function renderAdminStats(){
+  Promise.all([getDocs(collection(db,"users")), getDocs(collection(db,"minigames")), getDocs(collection(db,"skins"))]).then(([u,g,s])=>{
+    let totalPlays=0, official=0; g.forEach(d=>{const dd=d.data(); totalPlays+=dd.plays||0; if(dd.official) official++;});
+    const banned = u.docs.filter(d=>d.data().banned).length;
+    const box=$("#adminBody"); if(!box) return;
+    box.innerHTML=`
+      <div class="grid2">
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--primary);">${u.size}</div><div class="muted">Utenti totali</div></div>
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--mint);">${g.size}</div><div class="muted">Minigiochi pubblicati</div></div>
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--sun);">${official}</div><div class="muted">Contenuti ufficiali</div></div>
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--accent);">${s.size}</div><div class="muted">Skin pubblicate</div></div>
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--danger);">${banned}</div><div class="muted">Utenti bannati</div></div>
+        <div class="card center"><div style="font-size:26px; font-weight:800; color:var(--ink);">${totalPlays}</div><div class="muted">Partite giocate</div></div>
+      </div>`;
+  }).catch(e=>console.error(e));
+}
+
+/* ================= AUTH STATE ================= */
+onAuthStateChanged(auth, async (user)=>{
+  clearSubs();
+  offlineRewardChecked=false;
+  if(!user){ CURRENT_USER=null; PROFILE=null; VIEW="home"; render(); return; }
+  CURRENT_USER=user;
+  let first=true;
+  const unsub = onSnapshot(doc(db,"users",user.uid), (snap)=>{
+    if(!snap.exists()){
+      if(CURRENT_USER){
+        toast("Il tuo account è stato eliminato da un amministratore.","err");
+        clearSubs(); PROFILE=null; CURRENT_USER=null;
+        signOut(auth); render();
+      }
+      return;
+    }
+    const data=snap.data();
+    if(data.banned){
+      toast("Il tuo account è stato sospeso da un amministratore.","err");
+      clearSubs(); PROFILE=null; CURRENT_USER=null;
+      signOut(auth); render();
+      return;
+    }
+    if(data.forceLogout){
+      updateDoc(doc(db,"users",user.uid),{forceLogout:false}).catch(()=>{});
+      toast("Sei stato disconnesso da un amministratore.","err");
+      clearSubs(); PROFILE=null; CURRENT_USER=null;
+      signOut(auth); render();
+      return;
+    }
+    PROFILE = data;
+    if(first){ first=false; grantOfflineReward(); }
+    render();
+  }, err=>{
+    console.error(err);
+    toast("Errore di connessione a Firestore — controlla le regole","err");
+  });
+  SUBS.push(unsub);
+});
+
+setInterval(()=>{
+  if(!PROFILE) return;
+  if(VIEW==="home"){ applyDecay(PROFILE.pet); render(); }
+  else if(VIEW==="visit" && TEMP.visitId){ renderVisit(); }
+  else if(VIEW==="social" && (TEMP.socialTab||"friends")==="friends"){ renderFriendsTab(); }
+  else if(VIEW==="admin" && (TEMP.adminTab||"users")==="users"){ renderAdminUsers(); }
+},10000);
+
+render();
+</script>
+</body>
+</html>
